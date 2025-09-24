@@ -1,8 +1,9 @@
 # Titanic
+
 Machine learning from disaster
 ---
 
-## 👨‍👩‍👦 Autores
+## Authors
 - ✍️ **Julián Carvajal Garnica**  
 - ✍️ **Mauricio Cepeda Villanueva**  
 - ✍️ **Jhonatan Moreno**
@@ -10,8 +11,8 @@ Machine learning from disaster
 
 ---
 
-## 📜 Licencia
-Este proyecto está bajo la licencia **Apache**.  
-Ver archivo [`LICENSE`](./LICENSE) para más detalles.
+## 📜 License
+This project is under the license **Apache**.  
+View file [`LICENSE`](./LICENSE) for more details.
 
 ---
