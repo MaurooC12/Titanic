@@ -3,14 +3,15 @@ Machine learning from disaster
 ---
 
 ## 👨‍👩‍👦 Autores
-- ✍️ **Santiago López Murcia**  
+- ✍️ **Julián Carvajal Garnica**  
 - ✍️ **Mauricio Cepeda Villanueva**  
-- ✍️ **Juan Cuartas Casas**
+- ✍️ **Jhonatan Moreno**
+- ✍️ **Andrés Ramos Rojas**
 
 ---
 
 ## 📜 Licencia
-Este proyecto está bajo la licencia **APACH 2.0**.  
+Este proyecto está bajo la licencia **Apache**.  
 Ver archivo [`LICENSE`](./LICENSE) para más detalles.
 
 ---
