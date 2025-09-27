@@ -5,7 +5,7 @@ This repository explores the Titanic: Machine Learning from Disaster competition
 ## Authors
 - ✍️ **Julián Carvajal Garnica**  
 - ✍️ **Mauricio Cepeda Villanueva**  
-- ✍️ **Jhonatan Moreno**
+- ✍️ **Jhonatan David Moreno Barragan**
 - ✍️ **Andrés Ramos Rojas**
 
 ---

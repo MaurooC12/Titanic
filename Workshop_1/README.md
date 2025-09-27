@@ -18,7 +18,7 @@ The study is not only technical but also analytical: we explore the **systemic r
 ## 👥 Authors
 - Julián Carvajal Garnica — 20242020024  
 - Andrés Mauricio Cepeda Villanueva — 20242020010  
-- Jhonatan David Moreno Barragán  
+- Jhonatan David Moreno Barragán — 20201020094 
 - Andrés Camilo Ramos Rojas — 20242020005  
 
 ---
