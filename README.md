@@ -1,6 +1,5 @@
-# Titanic
-
-Machine learning from disaster
+# Titanic: Machine learning from disaster
+This repository explores the Titanic: Machine Learning from Disaster competition through a systems analysis lens. Instead of focusing only on prediction, the project examines how passenger data, model behavior, and uncertainty interact as parts of a complex system. Key elements like feature relationships, missing data, and randomness are analyzed to understand not just what the model predicts—but why.
 ---
 
 ## Authors
