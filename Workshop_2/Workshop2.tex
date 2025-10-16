@@ -1,0 +1,113 @@
+\documentclass[12pt]{report}
+
+% Paquetes básicos
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{setspace}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+
+% Configuración de márgenes
+\geometry{a4paper, margin=1in}
+
+% Espaciado
+\onehalfspacing
+
+\begin{document}
+
+\begin{titlepage}
+
+    \centering
+    
+    {\Large Workshops of the System analysis project \par}
+    \vspace{3cm}
+    
+    {\large 
+    Julián Carvajal Garnica \\ 
+    20242020024 \\[0.5cm]
+    Andrés Mauricio Cepeda Villanueva \\
+    20242020010 \\[0.5cm]
+    Jhonatan David Moreno Barragan \\
+    20201020094\\[0.5cm]
+    Andrés Camilo Ramos Rojas \\
+    20242020005
+    }
+    
+    \vfill
+    
+    Faculty of Engineering, Universidad Distrital Francisco José de Caldas \\
+    System Analysis \\
+    Carlos Andrés Sierra \\
+    Bogotá D.C. \\
+    2025
+    
+\end{titlepage}
+
+% ================== PARTE 1 ==================
+\chapter*{Part 1 of the System Analysis project}
+
+\section*{System Requirements Definition}
+
+Based on the analytical findings from \textit{Workshop 1} and the structure of the Kaggle competition \textit{Titanic: Machine Learning from Disaster}, the following system requirements have been defined. These requirements ensure that the proposed system design effectively addresses the constraints, sensitivity issues, and chaotic behaviors identified in the previous analysis.
+
+\subsection{Functional Requirements}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{1cm}|p{4cm}|p{9cm}|}
+\hline
+\textbf{ID} & \textbf{Requirement} & \textbf{Description} \\ \hline
+FR-1 & Data Ingestion Module & The system must be capable of loading and validating input datasets (\texttt{train.csv}, \texttt{test.csv}, and \texttt{gender\_submission.csv}) from Kaggle’s environment or local sources. \\ \hline
+FR-2 & Preprocessing and Cleaning & The system shall handle missing or null values in variables such as \texttt{Age}, \texttt{Cabin}, and \texttt{Embarked}, applying imputation or exclusion strategies. \\ \hline
+FR-3 & Feature Engineering & The system must support feature transformation (e.g., one-hot encoding for categorical variables like \texttt{Sex} or \texttt{Embarked}) to enhance model performance. \\ \hline
+FR-4 & Model Training & The system shall train at least one supervised learning model (e.g., Random Forest) to predict the binary variable \texttt{Survived} based on the selected features. \\ \hline
+FR-5 & Evaluation and Metrics & The system must compute the model’s accuracy using Kaggle’s evaluation metric and generate a submission file compliant with the format (\texttt{PassengerId}, \texttt{Survived}). \\ \hline
+FR-6 & Submission Output & The system shall export the final predictions to a CSV file named \texttt{submission.csv} following Kaggle’s structure and validation constraints. \\ \hline
+\end{tabular}
+\caption{Functional Requirements}
+\end{table}
+
+\subsection{Non-Functional Requirements}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{1cm}|p{4cm}|p{9cm}|}
+\hline
+\textbf{ID} & \textbf{Requirement} & \textbf{Description} \\ \hline
+NFR-1 & Performance & The system should process datasets (approximately 1,300 records combined) in less than 5 seconds on a standard Kaggle Notebook runtime. \\ \hline
+NFR-2 & Scalability & The design must allow easy integration of additional features (e.g., Fare Binning, Title Extraction) without requiring a complete system refactor. \\ \hline
+NFR-3 & Reproducibility & All experiments must be reproducible using Kaggle Notebooks, with fixed random seeds and documented dependencies. \\ \hline
+NFR-4 & Maintainability & The architecture must maintain modularity, separating data ingestion, preprocessing, training, and evaluation stages. \\ \hline
+NFR-5 & Usability & The workflow should be interpretable for new users, with clear outputs and visual feedback about model performance. \\ \hline
+NFR-6 & Reliability & The system must handle unexpected or corrupted input files through validation routines and error messages. \\ \hline
+\end{tabular}
+\caption{Non-Functional Requirements}
+\end{table}
+
+\subsection{Sensitivity-Driven Requirements}
+
+Derived from the \textit{Workshop 1} sensitivity and chaos analysis, the system should include:
+
+\begin{itemize}
+    \item \textbf{SR-1 – Controlled Randomness:} Use fixed random seeds in model training (e.g., \texttt{random\_state=1}) to reduce unpredictability in results.
+    \item \textbf{SR-2 – Robust Feature Selection:} Ensure inclusion of critical predictors (\texttt{Sex}, \texttt{Pclass}, \texttt{Age}) as omitting them significantly degrades accuracy.
+    \item \textbf{SR-3 – Missing Data Resilience:} Implement imputation strategies to prevent instability caused by incomplete data.
+    \item \textbf{SR-4 – Monitoring and Feedback:} Log performance metrics to detect deviations or anomalies that might emerge due to chaotic data interactions.
+\end{itemize}
+
+\subsection{User-Centric Requirements}
+
+While the competition’s scope is technical, the design should consider end-user needs:
+
+\begin{itemize}
+    \item \textbf{UR-1 – Simplicity:} The user should be able to execute the workflow in a single Jupyter cell sequence without manual file manipulation.
+    \item \textbf{UR-2 – Interpretability:} The final model should provide explainable relationships between passenger attributes and survival probability (e.g., through feature importance visualization).
+    \item \textbf{UR-3 – Security:} The system must not expose private Kaggle credentials or datasets beyond the platform’s controlled environment.
+\end{itemize}
+
+\noindent
+These requirements translate the \textit{Workshop 1} systemic insights—complexity, sensitivity, and chaos—into actionable engineering goals. The defined specifications establish a structured foundation for system architecture, ensuring that the predictive model for Titanic survival remains \textbf{accurate, reproducible, and resilient} in the face of uncertainty.
+
+\end{document}
