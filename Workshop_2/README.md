@@ -36,17 +36,3 @@ Core characteristics include:
 
 ---
 
-## Visual Component
-
-Below is the system design diagram that represents the **flow of data and interactions**  
-between the core modules — from **data ingestion** to **model deployment** and **performance monitoring**.
-
-![Architecture Diagram](./architecture_diagram.png)
-
----
-
-## Repository and Submission (optional)
-
-Place the final PDF (`Workshop_2.pdf`) and related assets in a folder named `Workshop_2_Design` within your GitHub repository. Update the repository `README.md` to include a link to this workshop folder and a brief note about the submission.
-
-**Suggested structure:**
