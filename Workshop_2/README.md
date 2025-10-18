@@ -22,17 +22,6 @@ The goal is to translate the analytical findings — including sensitivity, chao
 
 ---
 
-## Files Included
-
-| File | Description |
-|------|-------------|
-| **`Workshop_2.pdf`** | Final system design report for Workshop 2. |
-| **`architecture_diagram.png`** | High-level architecture diagram illustrating data flow and modules. |
-| **`requirements_table.xlsx`** | Functional and non-functional system requirements. |
-| **`README.md`** | Overview and description of this workshop folder. |
-
----
-
 ## Key Design Features
 
 The system design emphasizes **clarity, modularity, and control**.  
