@@ -1,28 +1,57 @@
-# Workshop 1 - Titanic: Machine Learning from Disaster
-
-## 📌 Overview
-This project is it focuses on the Kaggle competition **“Titanic: Machine Learning from Disaster”**, which challenges participants to predict passenger survival using machine learning techniques.
-
-The study is not only technical but also analytical: we explore the **systemic relationships** among variables (sex, age, class, fare, etc.), their impact on survival, and the inherent **complexity, chaos, and randomness** present in real-world events.
+# Workshop 1 — Systems Engineering Analysis
 
 ---
 
-## 🎯 Objectives
-- Build a predictive model to classify whether a passenger survived (1) or not (0).
-- Understand the systemic nature of the Titanic dataset: variables, dependencies, constraints, and external factors.
-- Manage **missing data**, **class imbalance**, and **nonlinear relationships**.
-- Highlight how chaos and uncertainty play a role in survival, beyond pure data analysis.
+## Overview
+
+This workshop marks the **first stage** of the *System Analysis & Design Project*.  
+Its purpose is to apply **systems engineering principles** to the Kaggle competition  
+**“Titanic: Machine Learning from Disaster”**, analyzing the system as a dynamic structure of interacting elements affected by complexity, sensitivity, and chaos.
+
+This phase builds the **conceptual foundation** for the following design and implementation stages.
 
 ---
 
-## 👥 Authors
-- Julián Carvajal Garnica — 20242020024  
-- Andrés Mauricio Cepeda Villanueva — 20242020010  
-- Jhonatan David Moreno Barragán — 20201020094 
-- Andrés Camilo Ramos Rojas — 20242020005  
+## Objectives
+
+- Perform a **systemic analysis** of the Titanic competition to identify its main components and relationships.  
+- Evaluate **data dependencies**, **constraints**, and **inter-element sensitivity** affecting predictive performance.  
+- Recognize **chaotic and nonlinear behaviors** within the dataset.  
+- Create a **visual model** of the system architecture, representing how competition elements interact.  
+- Generate an analytical report that supports the system design developed in Workshop 2.
 
 ---
 
-## 📜 License
-This project is licensed under the **MIT License**.  
-See the file [`LICENSE`](LICENSE) for details.
+## Files Included
+
+| File | Description |
+|------|-------------|
+| **`Workshop.pdf`** | Final report document submitted for Workshop 1. |
+| **`worksheet.tex`** | LaTeX source file used to compile the report. |
+| **`Figure1.png`** | System architecture diagram for the Kaggle environment. |
+| **`Workshop1.excalidraw`** | Editable version of the system diagram. |
+| **`README.md`** | Overview and description of this workshop folder. |
+
+---
+
+## Key Insights
+
+Through a systemic approach, the analysis revealed that the Titanic dataset behaves as a **complex adaptive system**, influenced by interdependent variables and unpredictable factors.  
+Key findings include:
+
+- High sensitivity to missing or incomplete data (Age, Cabin, Embarked).  
+- Strong interactions among core features such as *Sex*, *Pclass*, and *Fare*.  
+- Evidence of **nonlinear effects** and **feedback patterns** consistent with chaos theory.  
+- Importance of structured data handling and modular analysis pipelines for reproducibility.
+
+---
+
+## Visual Component
+
+Below is the system architecture diagram representing the Kaggle competition flow —  
+from **data ingestion** and **model development** to **submission** and **evaluation**.
+
+![System Diagram](./Figure1.png)
+
+---
+
