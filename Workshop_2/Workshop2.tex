@@ -1,6 +1,5 @@
 \documentclass[12pt]{report}
 
-% Paquetes básicos
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
@@ -8,106 +7,145 @@
 \usepackage{geometry}
 \usepackage{graphicx}
 \usepackage{float}
+\usepackage{hyperref}
 
-% Configuración de márgenes
 \geometry{a4paper, margin=1in}
 
-% Espaciado
 \onehalfspacing
 
 \begin{document}
-
 \begin{titlepage}
-
     \centering
     
-    {\Large Workshops of the System analysis project \par}
+    {\Large \textbf{Titanic: Machine Learning from Disaster} \par}
+    \vspace{0.5cm}
+    {\large \textbf{System Analysis Project} \par}
     \vspace{3cm}
-    
+
     {\large 
     Julián Carvajal Garnica \\ 
     20242020024 \\[0.5cm]
     Andrés Mauricio Cepeda Villanueva \\
     20242020010 \\[0.5cm]
-    Jhonatan David Moreno Barragan \\
-    20201020094\\[0.5cm]
+    Jhonatan David Moreno Barragán \\
+    20201020094 \\[0.5cm]
     Andrés Camilo Ramos Rojas \\
     20242020005
     }
     
     \vfill
     
-    Faculty of Engineering, Universidad Distrital Francisco José de Caldas \\
-    System Analysis \\
-    Carlos Andrés Sierra \\
+    School of Engineering, Universidad Distrital Francisco José de Caldas \\
+    System Analysis Course \\
+    Teacher: Carlos Andrés Sierra \\
     Bogotá D.C. \\
     2025
     
 \end{titlepage}
 
-% ================== PARTE 1 ==================
-\chapter*{Part 1 of the System Analysis project}
+\chapter*{Part 2 of the System Analysis Project}
 
-\section*{System Requirements Definition}
+\section*{1. Review of Workshop \#1 Findings}
 
-Based on the analytical findings from \textit{Workshop 1} and the structure of the Kaggle competition \textit{Titanic: Machine Learning from Disaster}, the following system requirements have been defined. These requirements ensure that the proposed system design effectively addresses the constraints, sensitivity issues, and chaotic behaviors identified in the previous analysis.
+The analytical work from Workshop \#1 provided a comprehensive understanding of the Titanic competition as a dynamic and interdependent system. Rather than treating it as a simple prediction problem, the study highlighted structural dependencies, sensitivity points, and chaotic behaviors that influence model performance and reliability.
 
-\subsection{Functional Requirements}
+\subsection*{System Overview and Core Elements}
+
+The system’s main objective is to predict passenger survival using multiple features — such as class, sex, age, and family relations — extracted from \texttt{train.csv}, \texttt{test.csv}, and \texttt{gender\_submission.csv}. Each dataset interacts with the others through defined roles in the machine learning pipeline: data ingestion, preprocessing, model training, and evaluation within Kaggle’s controlled environment.
+
+\subsection*{Data Characteristics and Constraints}
+
+Several structural constraints were identified in the datasets:
+\begin{itemize}
+    \item Missing or incomplete values in \texttt{Age}, \texttt{Cabin}, and \texttt{Embarked}
+    \item Class imbalance biasing model learning
+    \item Limited dataset size (approximately 1,300 samples), increasing risk of overfitting
+\end{itemize}
+
+\subsection*{Sensitivity and Complexity}
+
+The system displays high sensitivity to key predictors (\texttt{Sex}, \texttt{Pclass}, \texttt{Age}). Removing or misprocessing them decreases accuracy. Nonlinear relationships such as \texttt{Sex} $\times$ \texttt{Age} and \texttt{Pclass} $\times$ \texttt{Fare} create complex interactions requiring feature engineering and regularization.
+
+\subsection*{Chaos and Randomness}
+
+Even structured datasets like Titanic’s contain unpredictability. Passengers with similar profiles sometimes had opposite outcomes due to hidden variables. Family-related variables (\texttt{SibSp}, \texttt{Parch}) introduce feedback loops, reflecting emergent nonlinear behavior—an echo of chaos theory in data.
+
+\subsection*{Implications for System Design}
+
+These findings guide the system design foundations: modularity, robustness, and controlled randomness. Each stage—from data ingestion to model evaluation—must minimize instability and maximize reproducibility.
+
+\section*{2. System Requirements Definition}
+
+\subsection*{Functional Requirements}
 
 \begin{table}[H]
 \centering
 \begin{tabular}{|p{1cm}|p{4cm}|p{9cm}|}
 \hline
 \textbf{ID} & \textbf{Requirement} & \textbf{Description} \\ \hline
-FR-1 & Data Ingestion Module & The system must be capable of loading and validating input datasets (\texttt{train.csv}, \texttt{test.csv}, and \texttt{gender\_submission.csv}) from Kaggle’s environment or local sources. \\ \hline
-FR-2 & Preprocessing and Cleaning & The system shall handle missing or null values in variables such as \texttt{Age}, \texttt{Cabin}, and \texttt{Embarked}, applying imputation or exclusion strategies. \\ \hline
-FR-3 & Feature Engineering & The system must support feature transformation (e.g., one-hot encoding for categorical variables like \texttt{Sex} or \texttt{Embarked}) to enhance model performance. \\ \hline
-FR-4 & Model Training & The system shall train at least one supervised learning model (e.g., Random Forest) to predict the binary variable \texttt{Survived} based on the selected features. \\ \hline
-FR-5 & Evaluation and Metrics & The system must compute the model’s accuracy using Kaggle’s evaluation metric and generate a submission file compliant with the format (\texttt{PassengerId}, \texttt{Survived}). \\ \hline
-FR-6 & Submission Output & The system shall export the final predictions to a CSV file named \texttt{submission.csv} following Kaggle’s structure and validation constraints. \\ \hline
+FR-1 & Data Ingestion Module & Load and validate input datasets (\texttt{train.csv}, \texttt{test.csv}, and \texttt{gender\_submission.csv}). \\ \hline
+FR-2 & Preprocessing and Cleaning & Handle missing or null values in variables such as \texttt{Age}, \texttt{Cabin}, and \texttt{Embarked}. \\ \hline
+FR-3 & Feature Engineering & Apply transformations (e.g., one-hot encoding for categorical variables). \\ \hline
+FR-4 & Model Training & Train a supervised learning model (e.g., Random Forest) to predict \texttt{Survived}. \\ \hline
+FR-5 & Evaluation and Metrics & Compute model accuracy and generate submission file. \\ \hline
+FR-6 & Submission Output & Export predictions to \texttt{submission.csv} following Kaggle’s structure. \\ \hline
 \end{tabular}
 \caption{Functional Requirements}
 \end{table}
 
-\subsection{Non-Functional Requirements}
+\subsection*{Non-Functional Requirements}
 
 \begin{table}[H]
 \centering
 \begin{tabular}{|p{1cm}|p{4cm}|p{9cm}|}
 \hline
 \textbf{ID} & \textbf{Requirement} & \textbf{Description} \\ \hline
-NFR-1 & Performance & The system should process datasets (approximately 1,300 records combined) in less than 5 seconds on a standard Kaggle Notebook runtime. \\ \hline
-NFR-2 & Scalability & The design must allow easy integration of additional features (e.g., Fare Binning, Title Extraction) without requiring a complete system refactor. \\ \hline
-NFR-3 & Reproducibility & All experiments must be reproducible using Kaggle Notebooks, with fixed random seeds and documented dependencies. \\ \hline
-NFR-4 & Maintainability & The architecture must maintain modularity, separating data ingestion, preprocessing, training, and evaluation stages. \\ \hline
-NFR-5 & Usability & The workflow should be interpretable for new users, with clear outputs and visual feedback about model performance. \\ \hline
-NFR-6 & Reliability & The system must handle unexpected or corrupted input files through validation routines and error messages. \\ \hline
+NFR-1 & Performance & Process datasets (1,300 records) in less than 5 seconds. \\ \hline
+NFR-2 & Scalability & Allow easy addition of features without refactoring. \\ \hline
+NFR-3 & Reproducibility & Use fixed random seeds and documented dependencies. \\ \hline
+NFR-4 & Maintainability & Modular architecture separating stages. \\ \hline
+NFR-5 & Usability & Provide clear workflow and outputs. \\ \hline
+NFR-6 & Reliability & Handle corrupted input files gracefully. \\ \hline
 \end{tabular}
 \caption{Non-Functional Requirements}
 \end{table}
 
-\subsection{Sensitivity-Driven Requirements}
-
-Derived from the \textit{Workshop 1} sensitivity and chaos analysis, the system should include:
+\subsection*{Sensitivity-Driven Requirements}
 
 \begin{itemize}
-    \item \textbf{SR-1 – Controlled Randomness:} Use fixed random seeds in model training (e.g., \texttt{random\_state=1}) to reduce unpredictability in results.
-    \item \textbf{SR-2 – Robust Feature Selection:} Ensure inclusion of critical predictors (\texttt{Sex}, \texttt{Pclass}, \texttt{Age}) as omitting them significantly degrades accuracy.
-    \item \textbf{SR-3 – Missing Data Resilience:} Implement imputation strategies to prevent instability caused by incomplete data.
-    \item \textbf{SR-4 – Monitoring and Feedback:} Log performance metrics to detect deviations or anomalies that might emerge due to chaotic data interactions.
+    \item \textbf{SR-1 – Controlled Randomness:} Use fixed random seeds in training.
+    \item \textbf{SR-2 – Robust Feature Selection:} Include key predictors (\texttt{Sex}, \texttt{Pclass}, \texttt{Age}).
+    \item \textbf{SR-3 – Missing Data Resilience:} Apply imputation strategies.
+    \item \textbf{SR-4 – Monitoring and Feedback:} Log performance metrics to detect anomalies.
 \end{itemize}
 
-\subsection{User-Centric Requirements}
-
-While the competition’s scope is technical, the design should consider end-user needs:
+\subsection*{User-Centric Requirements}
 
 \begin{itemize}
-    \item \textbf{UR-1 – Simplicity:} The user should be able to execute the workflow in a single Jupyter cell sequence without manual file manipulation.
-    \item \textbf{UR-2 – Interpretability:} The final model should provide explainable relationships between passenger attributes and survival probability (e.g., through feature importance visualization).
-    \item \textbf{UR-3 – Security:} The system must not expose private Kaggle credentials or datasets beyond the platform’s controlled environment.
+    \item \textbf{UR-1 – Simplicity:} Execute workflow in one notebook sequence.
+    \item \textbf{UR-2 – Interpretability:} Provide explainable feature relationships.
+    \item \textbf{UR-3 – Security:} Prevent exposure of private Kaggle data.
 \end{itemize}
 
 \noindent
-These requirements translate the \textit{Workshop 1} systemic insights—complexity, sensitivity, and chaos—into actionable engineering goals. The defined specifications establish a structured foundation for system architecture, ensuring that the predictive model for Titanic survival remains \textbf{accurate, reproducible, and resilient} in the face of uncertainty.
+These requirements translate the \textit{Workshop 1} insights into engineering goals that ensure an \textbf{accurate, reproducible, and resilient} predictive system.
+
+\section*{3. High-Level Architecture}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{Figure1.png}
+    \caption{Architecture of the Kaggle competition environment.}
+    \label{fig:system-architecture}
+\end{figure}
+
+\noindent
+\textbf{Figure \ref{fig:system-architecture}} illustrates the architecture of the Kaggle competition environment. Competitors access the competition page, download datasets, train models in notebooks, and submit predictions for evaluation. The system computes accuracy, updates leaderboards, and integrates community interaction via forums and repositories.
+\begin{itemize}
+    \item \textbf{User:} The user will be an ordinary person regardless of their occupation; in reality, they only need to have an interest in the world of systems analysis, with access to practically the entire system except for certain interactions that will be carried out internally by the system.
+    \item \textbf{Interface \& competition page:} This module allows the user to interact directly with the competency environment, meaning that they are allowed to access the competency and view all the necessary information to understand the environment. Additionally, there are community environments that allow users to ask questions about the competencies.
+    \item \textbf{Data \& Notebooks/Compute:} This module allows the user to dive into the competition, accessing the data that will be used, the testing environment, and resources such as the notebooks provided by Kaggle for a better understanding of the competition.
+    \item \textbf{Storage/DB:} Prevent exposure of private Kaggle data
+    \item \textbf{Submissions, Evolution \& Leaderboard:} Prevent exposure of private Kaggle data
+\end{itemize}
 
 \end{document}
