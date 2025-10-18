@@ -9,19 +9,24 @@
 \usepackage{float}
 \usepackage{hyperref}
 
+
 \geometry{a4paper, margin=1in}
+
 
 \onehalfspacing
 
 \begin{document}
+
+
 \begin{titlepage}
     \centering
     
+
     {\Large \textbf{Titanic: Machine Learning from Disaster} \par}
     \vspace{0.5cm}
     {\large \textbf{System Analysis Project} \par}
     \vspace{3cm}
-
+    
     {\large 
     Julián Carvajal Garnica \\ 
     20242020024 \\[0.5cm]
@@ -35,6 +40,7 @@
     
     \vfill
     
+
     School of Engineering, Universidad Distrital Francisco José de Caldas \\
     System Analysis Course \\
     Teacher: Carlos Andrés Sierra \\
@@ -42,6 +48,7 @@
     2025
     
 \end{titlepage}
+
 
 \chapter*{Part 2 of the System Analysis Project}
 
@@ -73,6 +80,7 @@ Even structured datasets like Titanic’s contain unpredictability. Passengers w
 \subsection*{Implications for System Design}
 
 These findings guide the system design foundations: modularity, robustness, and controlled randomness. Each stage—from data ingestion to model evaluation—must minimize instability and maximize reproducibility.
+
 
 \section*{2. System Requirements Definition}
 
@@ -130,6 +138,7 @@ NFR-6 & Reliability & Handle corrupted input files gracefully. \\ \hline
 \noindent
 These requirements translate the \textit{Workshop 1} insights into engineering goals that ensure an \textbf{accurate, reproducible, and resilient} predictive system.
 
+
 \section*{3. High-Level Architecture}
 \begin{figure}[H]
     \centering
@@ -144,8 +153,10 @@ These requirements translate the \textit{Workshop 1} insights into engineering g
     \item \textbf{User:} The user will be an ordinary person regardless of their occupation; in reality, they only need to have an interest in the world of systems analysis, with access to practically the entire system except for certain interactions that will be carried out internally by the system.
     \item \textbf{Interface \& competition page:} This module allows the user to interact directly with the competency environment, meaning that they are allowed to access the competency and view all the necessary information to understand the environment. Additionally, there are community environments that allow users to ask questions about the competencies.
     \item \textbf{Data \& Notebooks/Compute:} This module allows the user to dive into the competition, accessing the data that will be used, the testing environment, and resources such as the notebooks provided by Kaggle for a better understanding of the competition.
-    \item \textbf{Storage/DB:} Prevent exposure of private Kaggle data
-    \item \textbf{Submissions, Evolution \& Leaderboard:} Prevent exposure of private Kaggle data
+    \item \textbf{Storage/DB:} This module is not directly accessible to the user but interacts with them indirectly by sending information that will be stored for later viewing, as in the leaderboard or in the different saved files.
+    \item \textbf{Submissions, Evolution \& Leaderboard:} This module allows the user to finalize their attempt in the competition by submitting the presented model to improve the prediction algorithm, as well as assigning a ranking by comparing it with the other submitted solutions.
 \end{itemize}
-
+\section*{4. Addressing Sensitivity and Chaos} 
+It is inevitable to deal with random factors. In the case of the Titanic, we can imagine damaged gates, someone being far from the escape routes, falling awkwardly into the water and being unable to stay afloat. There are many factors that can have an impact. Likewise, we find nonlinear relationships which will be somewhat random since there is nothing that can describe them accurately, as a linear function would. For all the above reasons, a robust and well-divided system is proposed in which it is possible to identify the implications of the elements among themselves more clearly, aiming for a better approximation of who has the capacity to survive and who does not. This is evidenced through the tests provided by the competition, where cases of people with very similar characteristics but opposite outcomes are found, although we also understand that it could be due to a lack of consideration of important variables.\\
+It would be extremely positive to start taking into account those values that we find to be random for a more exhaustive review and to find out which other variables could affect both sensitivity, as well as an unexpected variable or others.
 \end{document}
