@@ -1,23 +1,63 @@
-# Workshop 2 — System Design and Requirements
+# Workshop 2 — Systems Design and Implementation
 
 ---
 
 ## Overview
 
 This workshop represents the **second stage** of the *System Analysis & Design Project*.  
-It builds upon the findings from **Workshop 1**, transforming the systemic understanding of the Titanic competition  
-into a structured **system design**.  
-The goal is to define the **functional**, **non-functional**, and **sensitivity-driven** requirements that ensure  
-a modular, reproducible, and reliable predictive workflow aligned with systems engineering principles.
+Building upon the analytical foundation established in Workshop 1, it focuses on developing a **system design** for the Kaggle competition  
+**“Titanic: Machine Learning from Disaster.”**
 
-This phase marks the transition from analysis to design, focusing on the architecture, behavior, and robustness of the system.
+The goal is to translate the analytical findings — including sensitivity, chaos, and systemic dependencies — into a **robust, modular, and reproducible system architecture** capable of handling real-world data challenges.
 
 ---
 
 ## Objectives
 
-- Translate analytical insights from Workshop 1 into clear, measurable **system requirements**.  
-- Develop a **high-level system architecture** that defines the interaction among modules (data ingestion, preprocessing, model training, and evaluation).  
-- Integrate **systems engineering principles** such as modularity, scalability, and maintainability.  
-- Incorporate mechanisms to address **chaos and sensitivity**, reducing unpredictability in model behavior.  
-- Produce a **formal design document** that serves as the technical foundation for future implementation.
+- Design a **comprehensive system architecture** that connects data ingestion, preprocessing, model training, and deployment.  
+- Integrate **systems engineering principles** such as scalability, modularity, and maintainability.  
+- Address **chaotic and sensitive behaviors** through controlled randomness, monitoring, and feedback mechanisms.  
+- Define a **technical stack** aligned with the analytical needs of the project.  
+- Produce a structured **System Design Document** that serves as a blueprint for future implementations.
+
+---
+
+## Files Included
+
+| File | Description |
+|------|-------------|
+| **`Workshop_2.pdf`** | Final system design report for Workshop 2. |
+| **`architecture_diagram.png`** | High-level architecture diagram illustrating data flow and modules. |
+| **`requirements_table.xlsx`** | Functional and non-functional system requirements. |
+| **`README.md`** | Overview and description of this workshop folder. |
+
+---
+
+## Key Design Features
+
+The system design emphasizes **clarity, modularity, and control**.  
+Each stage of the workflow — from data loading to prediction generation — is clearly separated to ensure maintainability and reproducibility.  
+
+Core characteristics include:  
+- **Python-based stack** using Pandas, NumPy, Scikit-learn, Flask, and Docker.  
+- **Pipeline architecture** that supports step-by-step execution and testing.  
+- **Cross-validation** to enhance model robustness and reliability.  
+- **Logging and monitoring** to identify sensitivity and chaos within data behavior.  
+- **Containerized deployment** for scalable and reproducible execution environments.
+
+---
+
+## Visual Component
+
+Below is the system design diagram that represents the **flow of data and interactions**  
+between the core modules — from **data ingestion** to **model deployment** and **performance monitoring**.
+
+![Architecture Diagram](./architecture_diagram.png)
+
+---
+
+## Repository and Submission (optional)
+
+Place the final PDF (`Workshop_2.pdf`) and related assets in a folder named `Workshop_2_Design` within your GitHub repository. Update the repository `README.md` to include a link to this workshop folder and a brief note about the submission.
+
+**Suggested structure:**
