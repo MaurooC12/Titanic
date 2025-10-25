@@ -28,7 +28,7 @@ They summarize the system analysis, design methodology, proposed architecture, a
 
 ---
 
-### > [**Technical report.pdf**](./Technical report.pdf)
+### > [**TechnicalReport.pdf**](./TechnicalReport.pdf)
 A detailed document describing the technical implementation of the system.  
 It includes the requirements specification (functional and non-functional), system design diagrams, technical stack, and explanation of the modular predictive workflow.
 
