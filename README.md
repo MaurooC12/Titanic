@@ -29,6 +29,17 @@ The resulting document represents the engineered blueprint of the predictive wor
 
 ---
 
+## Documentation
+
+The Documentation folder contains complementary materials that support the system design and analysis process.  
+It includes detailed technical reports, diagrams, datasets references, and visual documentation related to both workshops and the general system architecture.  
+This section serves as a centralized space for project artifacts and supporting evidence used in the academic development of the Kaggle Titanic case study.
+
+> 📄 Detailed report and specification of documentation files available within the folder [`Documentation`](./Documentation).
+
+
+---
+
 ### Contributors
 
 - **Julián Carvajal Garnica**
