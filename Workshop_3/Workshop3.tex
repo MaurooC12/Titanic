@@ -1,6 +1,6 @@
 \documentclass[12pt]{report}
 
-% Paquetes básicos
+% ================== BASIC PACKAGES ==================
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
@@ -8,27 +8,27 @@
 \usepackage{geometry}
 \usepackage{graphicx}
 \usepackage{float}
-\usepackage{hyperref}
 \usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{float}
 
-% Configuración de márgenes
+% ================== PAGE SETTINGS ==================
 \geometry{a4paper, margin=1in}
-
-% Espaciado
 \onehalfspacing
 
 \begin{document}
-% ================== PORTADA ==================
+
+% ================== TITLE PAGE ==================
 \begin{titlepage}
     \centering
     
-    % ----- TÍTULO PRINCIPAL -----
     {\Large \textbf{Titanic: Machine Learning from Disaster} \par}
     \vspace{0.5cm}
     {\large \textbf{System Analysis Project} \par}
     \vspace{3cm}
     
-    % ----- AUTORES -----
     {\large 
     Julián Carvajal Garnica \\ 
     20242020024 \\[0.5cm]
@@ -42,7 +42,6 @@
     
     \vfill
     
-    % ----- INSTITUCIÓN -----
     School of Engineering, Universidad Distrital Francisco José de Caldas \\
     System Analysis Course \\
     Teacher: Carlos Andrés Sierra \\
@@ -50,8 +49,9 @@
     2025
     
 \end{titlepage}
-% ================== WORKSHOP 2 ==============
-\chapter*{Part 2 of the System Analysis Project}
+
+% ================== PART 3 ==================
+\chapter*{Part 3 of the System Analysis Project}
 
 \section*{1. Review and Refine System Architecture}
 
@@ -101,113 +101,167 @@ Following the process management principle of \textbf{ISO 9000}, we define how e
     \end{itemize}
 \end{itemize}
 
-% ----------------------------------------------------------
-\section*{2. Define System Requirements}
-
-Building on the analytical understanding from Workshop \#1, the following requirements define the foundations of the Kaggle system design. These requirements translate the system’s complexity, sensitivity, and feedback dynamics into concrete engineering objectives.
-
-\subsection*{2.1 Functional Requirements}
-
-\begin{itemize}
-    \item The system must ingest, preprocess, and validate data from the selected Kaggle dataset.
-    \item It must train and evaluate predictive models capable of handling nonlinear and sensitive data patterns.
-    \item It must incorporate monitoring and feedback to sustain model performance over time.
-    \item It should provide interfaces or visualization tools to track the evolution and stability of predictions.
-\end{itemize}
-
-\subsection*{2.2 Non-Functional Requirements}
-
-\begin{itemize}
-    \item \textbf{Scalability:} The system should grow dynamically with increasing data size or model complexity.
-    \item \textbf{Modularity:} Each subsystem must operate independently while maintaining interconnection.
-    \item \textbf{Reliability:} The design must ensure homeostasis—operational stability amid perturbations.
-    \item \textbf{Transparency:} Outputs and internal states should be interpretable and traceable for verification.
-    \item \textbf{Maintainability:} Components must be easily updated or replaced without destabilizing the whole.
-\end{itemize}
-
-\subsection*{2.3 Systemic Requirements}
-
-\begin{itemize}
-    \item \textbf{Homeostasis:} Self-regulation mechanisms must control sensitivity and prevent instability.
-    \item \textbf{Permeability:} The system should remain open to new data or environmental feedback.
-    \item \textbf{Equifinality:} Different models or pathways can achieve the same predictive goal.
-    \item \textbf{Adaptability:} The system must evolve through learning, maintaining equilibrium amid change.
-    \item \textbf{Holism and Synergy:} The overall performance emerges from the coordinated function of parts.
-\end{itemize}
-
-These requirements establish a foundation for designing a complex adaptive system, not just a static machine learning pipeline, where chaos and order coexist under structured feedback control.
 
 % ----------------------------------------------------------
-\section*{3. High-Level Architecture}
+\section*{2. Quality and Risk Analysis}
 
-The proposed architecture represents an open, adaptive, and self-organizing system. Its modular design ensures scalability, sensitivity management, and dynamic equilibrium. The flow of data and information follows a systemic pattern that resembles biological and ecological models—interconnected, feedback-driven, and hierarchically organized.
+Designing a robust system for the Titanic Kaggle Competition requires aligning quality management principles with systems thinking. The goal is to ensure reliability, scalability, maintainability, and adaptability, while managing uncertainty and sensitivity derived from the system’s inherent complexity.
 
-\subsection*{3.1 System Components}
+% ----------------------------------------------------------
+\subsection*{2.1 Quality Foundations}
+
+The system follows international quality frameworks to guarantee structural integrity and continuous improvement:
 
 \begin{itemize}
-    \item \textbf{Data Ingestion Layer:} Collects raw Kaggle data, ensuring permeability to external sources.
-    \item \textbf{Preprocessing Layer:} Filters noise, normalizes inputs, and stabilizes data variability.
-    \item \textbf{Modeling Layer:} Executes machine learning algorithms, balancing deterministic computation and stochastic exploration.
-    \item \textbf{Evaluation Layer:} Assesses model accuracy, detects chaotic deviations, and quantifies sensitivity.
-    \item \textbf{Deployment \& Feedback Layer:} Delivers the model to users or environments while receiving performance feedback to adjust internal states—representing homeostasis and autoregulation.
+    \item \textbf{ISO 9000 (Quality Management):} Ensures customer-focused design, process consistency, and continuous improvement throughout the system lifecycle.
+    \item \textbf{CMMI (Capability Maturity Model Integration):} Guides process optimization and project control, establishing measurable quality benchmarks.
+    \item \textbf{Six Sigma:} Provides statistical discipline for minimizing variation and data-driven decision-making, aligning with the need to control model sensitivity and randomness.
 \end{itemize}
 
-This architecture embodies complexity with control: chaos is not eliminated but harnessed through adaptive loops that preserve systemic balance.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Diagram1.png}
-    \caption{System architecture diagram for a Kaggle-based predictive system showing interconnected modules for data ingestion, preprocessing, modeling, evaluation, and deployment.}
-    \label{fig:diagram1}
-\end{figure}
+Each guideline reinforces systemic robustness by treating errors not as isolated faults but as signals for feedback, self-correction, and adaptation—echoing the principles of homeostasis and self-regulation in complex systems.
 
 % ----------------------------------------------------------
-\section*{4. Addressing Sensitivity and Chaos}
-
-Machine learning systems are inherently sensitive to input variation. Small perturbations—missing values, biased samples, or random fluctuations—can produce nonlinear effects that propagate through the model. This phenomenon, akin to chaotic attractors, requires systemic mitigation strategies.
-
-The proposed design incorporates feedback control mechanisms inspired by cybernetics and systems theory. These loops continuously compare expected outputs with actual results, triggering self-regulation and parameter adjustments when discrepancies exceed tolerance thresholds. This process emulates homeostasis, enabling the system to stabilize despite uncertainty.
-
-Furthermore, by analyzing feature sensitivity and error propagation, the system learns to identify fragile variables—those that disproportionately affect output. These are managed through adaptive preprocessing, ensemble modeling, and reweighting strategies that strengthen robustness.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\textwidth]{Diagram2.png}
-    \caption{Feedback control diagram for a machine learning system illustrating self-regulation mechanisms. The diagram shows loops between \textit{Model Output}, \textit{Monitoring Layer}, and \textit{Parameter Adjustment}, representing feedback and self-regulation. Chaotic regions highlight areas where small input changes lead to large output variations.}
-    \label{fig:diagram2}
-\end{figure}
-
-
-% ----------------------------------------------------------
-\section*{5. Technical Stack and Implementation Sketch}
-
-The technical foundation is selected to ensure modularity, interoperability, and adaptive scalability. Each layer corresponds to a subsystem within the architecture, integrating computational intelligence and systems engineering principles.
+\subsection*{2.2 Risk and Failure Analysis}
 
 \begin{table}[H]
 \centering
-\begin{tabular}{|p{4cm}|p{5cm}|p{7cm}|}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|p{3.5cm}|p{5.5cm}|p{6cm}|p{5cm}|}
 \hline
-\textbf{Layer} & \textbf{Tools / Technologies} & \textbf{Purpose and Role in System} \\ \hline
-\textbf{Data Layer} & Python (Pandas, NumPy) & Data ingestion, cleaning, and transformation. \\ \hline
-\textbf{Processing Layer} & Scikit-learn, TensorFlow & Model training and performance optimization. \\ \hline
-\textbf{Evaluation Layer} & Matplotlib, SHAP, LIME & Interpretability and sensitivity analysis. \\ \hline
-\textbf{Deployment Layer} & Flask, FastAPI, Streamlit & Visualization, deployment, and user interaction. \\ \hline
-\textbf{Feedback Layer} & Airflow, Prefect, or custom pipelines & Continuous monitoring, retraining, and control loops. \\ \hline
-\textbf{Versioning} & Git + GitHub & Ensures traceability, reproducibility, and collaboration. \\ \hline
+\textbf{Risk / Failure Point} & \textbf{Description} & \textbf{Mitigation Strategy} & \textbf{Monitoring Mechanism} \\ \hline
+\textbf{1. Data Quality and Loss} & Missing, biased, or corrupted data during preprocessing may distort model predictions and compromise system reliability. & Implement redundancy in data ingestion (dual pipelines), use validation scripts for integrity checks, and store datasets in version-controlled repositories. & Scheduled data audits, automatic validation logs, and alerts for anomalies in input distributions. \\ \hline
+\textbf{2. Model Overfitting and Sensitivity} & The system may become overly dependent on specific features, leading to poor generalization and chaotic behavior under new data. & Apply regularization, cross-validation, and ensemble methods to reduce variance; introduce stochastic perturbations to simulate uncertainty and test robustness. & Periodic retraining with fresh data; sensitivity analysis reports visualizing feature influence. \\ \hline
+\textbf{3. System Downtime or Integration Failure} & Interruption in deployment pipelines or feedback loops can halt adaptation and degrade performance. & Design a modular architecture with fault tolerance and fallback modes; implement containerized environments (Docker) for isolation and recovery. & Continuous integration (CI/CD) logs, health-check endpoints, and uptime dashboards. \\ \hline
+\textbf{4. Security and Data Confidentiality} & Unprotected interfaces or leaks could expose passenger data or system configurations. & Adopt ISO 27001 guidelines—data encryption, access control, and secure API endpoints. & Automated penetration testing and incident response monitoring. \\ \hline
+\textbf{5. Concept Drift and Environmental Change} & The statistical relationships in data may evolve over time, producing degraded accuracy. & Integrate dynamic feedback and retraining loops; trigger model updates based on performance thresholds. & Drift detection algorithms comparing recent vs. baseline accuracy metrics. \\ \hline
 \end{tabular}
-\caption{Technical Stack and System Implementation Sketch}
+}
+\caption{Risk and Failure Analysis with Mitigation Strategies}
 \end{table}
 
-The implementation follows a modular microservice structure. Each component functions semi-independently, communicating through defined interfaces, promoting permeability and synergy. The balance between deterministic modules (data preprocessing, evaluation) and stochastic modules (modeling, retraining) mirrors a chaotic yet self-organized ecosystem.
-\vspace{-0.5cm}
-\begin{figure}[H]
-    \centering
-    \vspace{-0.3cm} % ajusta un poco más si sigue separado de la tabla
-    \includegraphics[width=0.8\textwidth, keepaspectratio]{Diagram3.png}
-    \vspace{-0.3cm}
-    \caption{Technical stack diagram linking each architectural layer (\textit{Data Layer}, \textit{Processing Layer}, \textit{Model Layer}, and \textit{Interface Layer}) with corresponding technologies and frameworks such as Pandas, Scikit-learn, TensorFlow, and Streamlit. This diagram illustrates how each component integrates within the system to ensure modularity, interoperability, and adaptive scalability.}
-    \label{fig:diagram3}
-\end{figure}
-\vspace{-0.3cm}
 
+% ----------------------------------------------------------
+\subsection*{2.3 Systemic Integration of Quality and Risk Control}
+
+This system applies quality assurance as a living process—not a static checklist. Through continuous feedback and adaptive response, it mirrors the homeostatic regulation seen in natural systems: deviations are sensed, processed, and corrected to restore equilibrium.
+
+Quality and risk management act as dual forces in systemic harmony:
+\begin{itemize}
+    \item \textbf{Quality guidelines} create structure and predictability (deterministic behavior).
+    \item \textbf{Risk management} embraces variability and chaos, converting it into controlled adaptability.
+\end{itemize}
+
+In practice, each identified risk becomes a node in a feedback network, transforming vulnerabilities into learning opportunities. The balance between control (stability) and flexibility (adaptability) ensures that the Titanic predictive system remains resilient, sustainable, and intelligent in the face of uncertainty.
+
+% ----------------------------------------------------------
+\section*{3. Project Management Plan}
+
+The project management plan outlines how the team will manage tasks, track progress, and guarantee that the system design and implementation develop in a systematic and regulated way. This strategy adheres to fundamental project management concepts, integrating role specification, milestone scheduling, and agile organizational tools
+
+\subsection*{3.1 Team Roles and Responsibilities}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{5cm}|p{9cm}|}
+\hline
+\textbf{Role} & \textbf{Responsibilities} \\
+\hline
+\textbf{Project Manager (Andrés Camilo Ramos)} & Oversees the project timeline, assigns tasks, and ensures coordination between members. \\
+\hline
+\textbf{System Analyst (Julián Carvajal)} & Reviews system requirements, maintains consistency with previous workshops, and validates design improvements. \\
+\hline
+\textbf{Data Engineer (Jhonatan Moreno)} & Manages data ingestion, cleaning, and transformation processes, ensuring dataset integrity and reliability. \\
+\hline
+\textbf{Machine Learning Developer (Andrés Cepeda)} & Implements and tunes machine learning models, evaluates performance, and applies optimization strategies. \\
+\hline
+\textbf{QA Tester (All Members)} & Verifies outputs, checks accuracy of predictions, and documents bugs or inconsistencies during testing. \\
+\hline
+\end{tabular}
+\caption{Team Roles and Responsibilities}
+\label{tab:team_roles}
+\end{table}
+
+\subsection*{3.2 Key milestones and Deliverables}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{4cm}|p{8.5cm}|p{3cm}|}
+\hline
+\textbf{Milestone} & \textbf{Description} & \textbf{Deadline} \\
+\hline
+\textbf{System Refinement} & Incorporate robust design principles (modularity, fault-tolerance, scalability) into the existing architecture. & November 16, 2025 \\
+\hline
+\textbf{Risk and Quality Analysis} & Identify potential system risks and define mitigation strategies aligned with ISO 9000 and CMMI principles. & November 19, 2025 \\
+\hline
+\textbf{Prototype Update} & Integrate refined modules and apply monitoring mechanisms to handle sensitivity and chaotic data behavior. & November 23, 2025 \\
+\hline
+\textbf{Final Documentation} & Compile the complete Workshop 3 report (architecture, risks, project plan, and improvements) and perform final peer review. & November 28, 2025 \\
+\hline
+\end{tabular}
+\caption{Updated Project Milestones and Deadlines}
+\label{tab:project_milestones}
+\end{table}
+
+\subsubsection*{3.3 Methodology and Tools}
+
+The project adopts an \textbf{Agile-oriented methodology} supported by a \textbf{Kanban workflow} to ensure flexibility, collaboration, and continuous improvement throughout development. This approach divides the process into small, manageable tasks that can be completed and reviewed incrementally, maintaining full visibility of progress and priorities.
+
+From a technical perspective, the workflow is structured as follows:
+
+\begin{itemize}
+    \item \textbf{Data Acquisition and Cleaning:} Import and preprocess the \textit{train.csv} and \textit{test.csv} datasets using \textbf{Pandas} and \textbf{NumPy}, handling missing values and ensuring data consistency.
+    
+    \item \textbf{Feature Engineering:} Transform categorical variables such as \textit{Sex}, \textit{Pclass}, \textit{SibSp}, and \textit{Parch} into numerical form and create new relevant attributes to improve model performance.
+    
+    \item \textbf{Model Training and Evaluation:} Implement machine learning algorithms from \textbf{Scikit-learn}, such as \textit{Decision Tree} and \textit{Random Forest}, to predict survival outcomes. Model performance will be evaluated using metrics like accuracy and F1-score.
+    
+    \item \textbf{Prediction and Submission:} Generate a \textit{submission.csv} file with the model’s predictions and validate the results within the Kaggle competition environment.
+\end{itemize}
+
+For project coordination, a \textbf{Kanban board} (implemented in \textbf{Trello} or \textbf{GitHub Projects}) will be used to organize tasks in three main columns:
+
+\begin{itemize}
+    \item \textbf{To Do:} Tasks that are planned but not yet started.
+    \item \textbf{In Progress:} Tasks currently being worked on.
+    \item \textbf{Completed:} Finished tasks that have been reviewed and verified.
+\end{itemize}
+
+This methodology and toolset allow for effective task distribution, smooth team collaboration, and clear progress tracking, ensuring that all project components are developed in a structured and iterative manner.
+
+\subsection *{3.4 Timeline and Workflow Diagram}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+    node distance=1.8cm and 1.2cm,
+    milestone/.style={rectangle, rounded corners, draw=black, fill=blue!10, text width=3cm, align=center, minimum height=1cm},
+    arrow/.style={-latex, thick}
+]
+
+% Nodes
+\node[milestone] (refine) {System Refinement \\ \footnotesize November 16, 2025};
+\node[milestone, right=of refine] (risk) {Risk and Quality Analysis \\ \footnotesize November 19, 2025};
+\node[milestone, right=of risk] (prototype) {Prototype Update \\ \footnotesize November 23, 2025};
+\node[milestone, right=of prototype] (final) {Final Documentation \\ \footnotesize November 28, 2025};
+
+% Arrows
+\draw[arrow] (refine) -- (risk);
+\draw[arrow] (risk) -- (prototype);
+\draw[arrow] (prototype) -- (final);
+
+\end{tikzpicture}
+\caption{Project Workflow and Timeline}
+\label{fig:project_timeline}
+\end{figure}
+
+
+% ----------------------------------------------------------
+\section*{4. Incremental Improvements}
+Based on the brief feedback from previous workshops, the system design and management plan have evolved significantly. The initial focus was reassessed to concentrate on the data provided by the Kaggle competition, at a problem to solve, leading to a more robust and formalized approach. The following enhancements were implemented in response:
+
+\begin{itemize}
+    \item \textbf{Integration of Formal Quality and Risk Management:} To improve robustness, maintainability, and reliability, the system design now incorporates international quality frameworks. This includes \textbf{ISO 9000} for process consistency, \textbf{CMMI} for process optimization, and \textbf{Six Sigma} to minimize variation. This structured approach provides a formal way to manage identified risks, such as \textbf{Data Quality} and \textbf{Model Overfitting}, converting vulnerabilities into learning opportunities].
+
+    \item \textbf{Formalized Project Management Methodology:} The project's management has been structured to ensure development occurs in a systematic and regulated manner. An \textbf{Agile-oriented methodology} supported by a Kanban workflow was adopted to enhance flexibility and collaboration. This evolution includes a clear definition of team roles, such as Project Manager and System Analyst, and a precise schedule of milestones and deliverables, ensuring clear progress tracking and that all project components are developed iteratively.
+\end{itemize}
 \end{document}
