@@ -1,0 +1,213 @@
+\documentclass[12pt]{report}
+
+% Paquetes básicos
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{setspace}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{booktabs}
+
+% Configuración de márgenes
+\geometry{a4paper, margin=1in}
+
+% Espaciado
+\onehalfspacing
+
+\begin{document}
+% ================== PORTADA ==================
+\begin{titlepage}
+    \centering
+    
+    % ----- TÍTULO PRINCIPAL -----
+    {\Large \textbf{Titanic: Machine Learning from Disaster} \par}
+    \vspace{0.5cm}
+    {\large \textbf{System Analysis Project} \par}
+    \vspace{3cm}
+    
+    % ----- AUTORES -----
+    {\large 
+    Julián Carvajal Garnica \\ 
+    20242020024 \\[0.5cm]
+    Andrés Mauricio Cepeda Villanueva \\
+    20242020010 \\[0.5cm]
+    Jhonatan David Moreno Barragán \\
+    20201020094 \\[0.5cm]
+    Andrés Camilo Ramos Rojas \\
+    20242020005
+    }
+    
+    \vfill
+    
+    % ----- INSTITUCIÓN -----
+    School of Engineering, Universidad Distrital Francisco José de Caldas \\
+    System Analysis Course \\
+    Teacher: Carlos Andrés Sierra \\
+    Bogotá D.C. \\
+    2025
+    
+\end{titlepage}
+% ================== WORKSHOP 2 ==============
+\chapter*{Part 2 of the System Analysis Project}
+
+\section*{1. Review and Refine System Architecture}
+
+Based on the high-level architecture defined in Part 2, this section refines the design to incorporate robust engineering principles, as requested in Workshop 3. The goal is to evolve our predictive system from a prototype to a sustainable solution, explicitly addressing reliability, scalability, and maintainability.
+
+\subsection*{1.1 Refinement of Robust Design Principles}
+
+The original architecture established a modular flow. We now refine this with an explicit focus on robustness:
+
+\begin{itemize}
+    \item \textbf{Modularity and Maintainability (CMMI):} We are taking modularity a step further. Each component (Ingestion, Preprocessing, Modeling, Evaluation) [cite: 96-100] will be designed as a containerized microservice (e.g., using Docker). This not only reinforces modularity but also aligns with \textbf{CMMI} principles by allowing independent configuration management and facilitating maintainability, as one component can be updated without destabilizing the entire system.
+
+    \item \textbf{Scalability:} The scalability NFR will be addressed through the orchestration of these containers (e.g., with Kubernetes). Specifically, the \textit{Modeling Layer} and \textit{Deployment Layer} will be able to scale horizontally. If the demand for Titanic predictions increases, we can dynamically launch more instances of the \textit{Deployment} service.
+
+    \item \textbf{Fault-Tolerance:} This is a critical refinement.
+    \begin{itemize}
+        \item \textbf{Data Ingestion:} A message queue (e.g., RabbitMQ or Kafka) will be implemented between the ingestion and preprocessing layers. If the \textit{Preprocessing Layer} fails, the raw Kaggle data is not lost; it waits in the queue, ensuring \textbf{reliability}.
+        \item \textbf{Deployment:} A load balancer will be used to distribute prediction requests among multiple model replicas. If one replica fails, traffic is automatically rerouted to healthy ones.
+        \item \textbf{Feedback Loop:} The \textit{Feedback Layer} will monitor model health. If the error rate (an indicator of chaos) exceeds a threshold, the system can automatically roll back to a previously stable model version, ensuring \textbf{homeostasis}.
+    \end{itemize}
+\end{itemize}
+
+\subsection*{1.2 Components and their Support for Quality (ISO 9000)}
+
+Following the process management principle of \textbf{ISO 9000}, we define how each component ensures system quality and reliability:
+
+\begin{itemize}
+    \item \textbf{Data Ingestion Layer:}
+    \begin{itemize}
+        \item \textit{Quality:} Implements data validation schemas (e.g., Pydantic) to ensure incoming data meets the expected format (data types, ranges).
+        \item \textit{Reliability:} Uses retries and the message queue (see above) to handle network failures or Kaggle service downtime.
+    \end{itemize}
+    
+    \item \textbf{Preprocessing Layer:}
+    \begin{itemize}
+        \item \textit{Quality:} Versioning of preprocessing artifacts (e.g., Scikit-learn scalers or encoders) is implemented. Each trained model will be linked to the exact version of the preprocessing pipeline it used, ensuring \textbf{transparency} and reproducibility.
+    \end{itemize}
+    
+    \item \textbf{Modeling \& Evaluation Layer:}
+    \begin{itemize}
+        \item \textit{Quality:} We apply a \textit{Six Sigma} approach to "defect reduction" (prediction errors). The \textit{Evaluation Layer} will not only measure accuracy but also use SHAP and LIME to analyze the \textit{root cause} of errors and bias, aligning with the "Analyze" phase of DMAIC.
+    \end{itemize}
+    
+    \item \textbf{Deployment \& Feedback Layer:}
+    \begin{itemize}
+        \item \textit{Reliability:} Implements "Canary" deployments. A new model version is first released to a small percentage of users. The \textit{Feedback Layer} monitors its real-time performance. If stable, it is rolled out to everyone; if it fails, it is rolled back without affecting the majority of users.
+    \end{itemize}
+\end{itemize}
+
+% ----------------------------------------------------------
+\section*{2. Define System Requirements}
+
+Building on the analytical understanding from Workshop \#1, the following requirements define the foundations of the Kaggle system design. These requirements translate the system’s complexity, sensitivity, and feedback dynamics into concrete engineering objectives.
+
+\subsection*{2.1 Functional Requirements}
+
+\begin{itemize}
+    \item The system must ingest, preprocess, and validate data from the selected Kaggle dataset.
+    \item It must train and evaluate predictive models capable of handling nonlinear and sensitive data patterns.
+    \item It must incorporate monitoring and feedback to sustain model performance over time.
+    \item It should provide interfaces or visualization tools to track the evolution and stability of predictions.
+\end{itemize}
+
+\subsection*{2.2 Non-Functional Requirements}
+
+\begin{itemize}
+    \item \textbf{Scalability:} The system should grow dynamically with increasing data size or model complexity.
+    \item \textbf{Modularity:} Each subsystem must operate independently while maintaining interconnection.
+    \item \textbf{Reliability:} The design must ensure homeostasis—operational stability amid perturbations.
+    \item \textbf{Transparency:} Outputs and internal states should be interpretable and traceable for verification.
+    \item \textbf{Maintainability:} Components must be easily updated or replaced without destabilizing the whole.
+\end{itemize}
+
+\subsection*{2.3 Systemic Requirements}
+
+\begin{itemize}
+    \item \textbf{Homeostasis:} Self-regulation mechanisms must control sensitivity and prevent instability.
+    \item \textbf{Permeability:} The system should remain open to new data or environmental feedback.
+    \item \textbf{Equifinality:} Different models or pathways can achieve the same predictive goal.
+    \item \textbf{Adaptability:} The system must evolve through learning, maintaining equilibrium amid change.
+    \item \textbf{Holism and Synergy:} The overall performance emerges from the coordinated function of parts.
+\end{itemize}
+
+These requirements establish a foundation for designing a complex adaptive system, not just a static machine learning pipeline, where chaos and order coexist under structured feedback control.
+
+% ----------------------------------------------------------
+\section*{3. High-Level Architecture}
+
+The proposed architecture represents an open, adaptive, and self-organizing system. Its modular design ensures scalability, sensitivity management, and dynamic equilibrium. The flow of data and information follows a systemic pattern that resembles biological and ecological models—interconnected, feedback-driven, and hierarchically organized.
+
+\subsection*{3.1 System Components}
+
+\begin{itemize}
+    \item \textbf{Data Ingestion Layer:} Collects raw Kaggle data, ensuring permeability to external sources.
+    \item \textbf{Preprocessing Layer:} Filters noise, normalizes inputs, and stabilizes data variability.
+    \item \textbf{Modeling Layer:} Executes machine learning algorithms, balancing deterministic computation and stochastic exploration.
+    \item \textbf{Evaluation Layer:} Assesses model accuracy, detects chaotic deviations, and quantifies sensitivity.
+    \item \textbf{Deployment \& Feedback Layer:} Delivers the model to users or environments while receiving performance feedback to adjust internal states—representing homeostasis and autoregulation.
+\end{itemize}
+
+This architecture embodies complexity with control: chaos is not eliminated but harnessed through adaptive loops that preserve systemic balance.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Diagram1.png}
+    \caption{System architecture diagram for a Kaggle-based predictive system showing interconnected modules for data ingestion, preprocessing, modeling, evaluation, and deployment.}
+    \label{fig:diagram1}
+\end{figure}
+
+% ----------------------------------------------------------
+\section*{4. Addressing Sensitivity and Chaos}
+
+Machine learning systems are inherently sensitive to input variation. Small perturbations—missing values, biased samples, or random fluctuations—can produce nonlinear effects that propagate through the model. This phenomenon, akin to chaotic attractors, requires systemic mitigation strategies.
+
+The proposed design incorporates feedback control mechanisms inspired by cybernetics and systems theory. These loops continuously compare expected outputs with actual results, triggering self-regulation and parameter adjustments when discrepancies exceed tolerance thresholds. This process emulates homeostasis, enabling the system to stabilize despite uncertainty.
+
+Furthermore, by analyzing feature sensitivity and error propagation, the system learns to identify fragile variables—those that disproportionately affect output. These are managed through adaptive preprocessing, ensemble modeling, and reweighting strategies that strengthen robustness.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{Diagram2.png}
+    \caption{Feedback control diagram for a machine learning system illustrating self-regulation mechanisms. The diagram shows loops between \textit{Model Output}, \textit{Monitoring Layer}, and \textit{Parameter Adjustment}, representing feedback and self-regulation. Chaotic regions highlight areas where small input changes lead to large output variations.}
+    \label{fig:diagram2}
+\end{figure}
+
+
+% ----------------------------------------------------------
+\section*{5. Technical Stack and Implementation Sketch}
+
+The technical foundation is selected to ensure modularity, interoperability, and adaptive scalability. Each layer corresponds to a subsystem within the architecture, integrating computational intelligence and systems engineering principles.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|p{4cm}|p{5cm}|p{7cm}|}
+\hline
+\textbf{Layer} & \textbf{Tools / Technologies} & \textbf{Purpose and Role in System} \\ \hline
+\textbf{Data Layer} & Python (Pandas, NumPy) & Data ingestion, cleaning, and transformation. \\ \hline
+\textbf{Processing Layer} & Scikit-learn, TensorFlow & Model training and performance optimization. \\ \hline
+\textbf{Evaluation Layer} & Matplotlib, SHAP, LIME & Interpretability and sensitivity analysis. \\ \hline
+\textbf{Deployment Layer} & Flask, FastAPI, Streamlit & Visualization, deployment, and user interaction. \\ \hline
+\textbf{Feedback Layer} & Airflow, Prefect, or custom pipelines & Continuous monitoring, retraining, and control loops. \\ \hline
+\textbf{Versioning} & Git + GitHub & Ensures traceability, reproducibility, and collaboration. \\ \hline
+\end{tabular}
+\caption{Technical Stack and System Implementation Sketch}
+\end{table}
+
+The implementation follows a modular microservice structure. Each component functions semi-independently, communicating through defined interfaces, promoting permeability and synergy. The balance between deterministic modules (data preprocessing, evaluation) and stochastic modules (modeling, retraining) mirrors a chaotic yet self-organized ecosystem.
+\vspace{-0.5cm}
+\begin{figure}[H]
+    \centering
+    \vspace{-0.3cm} % ajusta un poco más si sigue separado de la tabla
+    \includegraphics[width=0.8\textwidth, keepaspectratio]{Diagram3.png}
+    \vspace{-0.3cm}
+    \caption{Technical stack diagram linking each architectural layer (\textit{Data Layer}, \textit{Processing Layer}, \textit{Model Layer}, and \textit{Interface Layer}) with corresponding technologies and frameworks such as Pandas, Scikit-learn, TensorFlow, and Streamlit. This diagram illustrates how each component integrates within the system to ensure modularity, interoperability, and adaptive scalability.}
+    \label{fig:diagram3}
+\end{figure}
+\vspace{-0.3cm}
+
+\end{document}
