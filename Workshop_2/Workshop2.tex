@@ -1,5 +1,6 @@
 \documentclass[12pt]{report}
 
+% Paquetes básicos
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
@@ -8,25 +9,26 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{hyperref}
+\usepackage{booktabs}
 
-
+% Configuración de márgenes
 \geometry{a4paper, margin=1in}
 
-
+% Espaciado
 \onehalfspacing
 
 \begin{document}
-
-
+% ================== PORTADA ==================
 \begin{titlepage}
     \centering
     
-
+    % ----- TÍTULO PRINCIPAL -----
     {\Large \textbf{Titanic: Machine Learning from Disaster} \par}
     \vspace{0.5cm}
     {\large \textbf{System Analysis Project} \par}
     \vspace{3cm}
     
+    % ----- AUTORES -----
     {\large 
     Julián Carvajal Garnica \\ 
     20242020024 \\[0.5cm]
@@ -40,7 +42,7 @@
     
     \vfill
     
-
+    % ----- INSTITUCIÓN -----
     School of Engineering, Universidad Distrital Francisco José de Caldas \\
     System Analysis Course \\
     Teacher: Carlos Andrés Sierra \\
@@ -48,115 +50,348 @@
     2025
     
 \end{titlepage}
-
-
+% ================== WORKSHOP 2 ==============
 \chapter*{Part 2 of the System Analysis Project}
 
 \section*{1. Review of Workshop \#1 Findings}
 
-The analytical work from Workshop \#1 provided a comprehensive understanding of the Titanic competition as a dynamic and interdependent system. Rather than treating it as a simple prediction problem, the study highlighted structural dependencies, sensitivity points, and chaotic behaviors that influence model performance and reliability.
+This section summarizes the main analytical outcomes from Workshop \#1 and establishes
+the foundation for the system design developed in Workshop \#2. All insights are derived
+exclusively from the Kaggle dataset \textit{“Titanic: Machine Learning from Disaster”},
+focusing strictly on the structure, dependencies, and behavior observable within the data.
 
-\subsection*{System Overview and Core Elements}
+\subsection*{1.1 Summary of System Characteristics Identified in Workshop \#1}
 
-The system’s main objective is to predict passenger survival using multiple features — such as class, sex, age, and family relations — extracted from \texttt{train.csv}, \texttt{test.csv}, and \texttt{gender\_submission.csv}. Each dataset interacts with the others through defined roles in the machine learning pipeline: data ingestion, preprocessing, model training, and evaluation within Kaggle’s controlled environment.
-
-\subsection*{Data Characteristics and Constraints}
-
-Several structural constraints were identified in the datasets:
-\begin{itemize}
-    \item Missing or incomplete values in \texttt{Age}, \texttt{Cabin}, and \texttt{Embarked}
-    \item Class imbalance biasing model learning
-    \item Limited dataset size (approximately 1,300 samples), increasing risk of overfitting
-\end{itemize}
-
-\subsection*{Sensitivity and Complexity}
-
-The system displays high sensitivity to key predictors (\texttt{Sex}, \texttt{Pclass}, \texttt{Age}). Removing or misprocessing them decreases accuracy. Nonlinear relationships such as \texttt{Sex} $\times$ \texttt{Age} and \texttt{Pclass} $\times$ \texttt{Fare} create complex interactions requiring feature engineering and regularization.
-
-\subsection*{Chaos and Randomness}
-
-Even structured datasets like Titanic’s contain unpredictability. Passengers with similar profiles sometimes had opposite outcomes due to hidden variables. Family-related variables (\texttt{SibSp}, \texttt{Parch}) introduce feedback loops, reflecting emergent nonlinear behavior—an echo of chaos theory in data.
-
-\subsection*{Implications for System Design}
-
-These findings guide the system design foundations: modularity, robustness, and controlled randomness. Each stage—from data ingestion to model evaluation—must minimize instability and maximize reproducibility.
-
-
-\section*{2. System Requirements Definition}
-
-\subsection*{Functional Requirements}
-
-\begin{table}[H]
-\centering
-\begin{tabular}{|p{1cm}|p{4cm}|p{9cm}|}
-\hline
-\textbf{ID} & \textbf{Requirement} & \textbf{Description} \\ \hline
-FR-1 & Data Ingestion Module & Load and validate input datasets (\texttt{train.csv}, \texttt{test.csv}, and \texttt{gender\_submission.csv}). \\ \hline
-FR-2 & Preprocessing and Cleaning & Handle missing or null values in variables such as \texttt{Age}, \texttt{Cabin}, and \texttt{Embarked}. \\ \hline
-FR-3 & Feature Engineering & Apply transformations (e.g., one-hot encoding for categorical variables). \\ \hline
-FR-4 & Model Training & Train a supervised learning model (e.g., Random Forest) to predict \texttt{Survived}. \\ \hline
-FR-5 & Evaluation and Metrics & Compute model accuracy and generate submission file. \\ \hline
-FR-6 & Submission Output & Export predictions to \texttt{submission.csv} following Kaggle’s structure. \\ \hline
-\end{tabular}
-\caption{Functional Requirements}
-\end{table}
-
-\subsection*{Non-Functional Requirements}
-
-\begin{table}[H]
-\centering
-\begin{tabular}{|p{1cm}|p{4cm}|p{9cm}|}
-\hline
-\textbf{ID} & \textbf{Requirement} & \textbf{Description} \\ \hline
-NFR-1 & Performance & Process datasets (1,300 records) in less than 5 seconds. \\ \hline
-NFR-2 & Scalability & Allow easy addition of features without refactoring. \\ \hline
-NFR-3 & Reproducibility & Use fixed random seeds and documented dependencies. \\ \hline
-NFR-4 & Maintainability & Modular architecture separating stages. \\ \hline
-NFR-5 & Usability & Provide clear workflow and outputs. \\ \hline
-NFR-6 & Reliability & Handle corrupted input files gracefully. \\ \hline
-\end{tabular}
-\caption{Non-Functional Requirements}
-\end{table}
-
-\subsection*{Sensitivity-Driven Requirements}
+The Titanic dataset was defined as a closed input--output system where each instance
+(passenger) contains structured attributes determining the binary outcome \texttt{Survived}.
+Workshop \#1 identified the following essential characteristics:
 
 \begin{itemize}
-    \item \textbf{SR-1 – Controlled Randomness:} Use fixed random seeds in training.
-    \item \textbf{SR-2 – Robust Feature Selection:} Include key predictors (\texttt{Sex}, \texttt{Pclass}, \texttt{Age}).
-    \item \textbf{SR-3 – Missing Data Resilience:} Apply imputation strategies.
-    \item \textbf{SR-4 – Monitoring and Feedback:} Log performance metrics to detect anomalies.
+    \item \textbf{Input Variables (System Elements):}
+    Passenger information such as \texttt{Sex}, \texttt{Age}, \texttt{Pclass},
+    \texttt{SibSp}, \texttt{Parch}, \texttt{Fare}, \texttt{Cabin}, \texttt{Embarked},
+    and name-derived titles.
+    
+    \item \textbf{Output Variable:}
+    \texttt{Survived} (0 or 1), representing the system’s final state.
+
+    \item \textbf{Internal Relations:}
+    The dataset exhibits structural relationships, such as:
+    \begin{itemize}
+        \item \texttt{Pclass} correlates with \texttt{Fare}.
+        \item \texttt{Sex} correlates with \texttt{Survived}.
+        \item \texttt{Age} patterns vary across passenger groups.
+        \item \texttt{SibSp + Parch} form implicit family structures.
+        \item \texttt{Embarked} distribution relates to \texttt{Pclass} and \texttt{Fare}.
+    \end{itemize}
+
+    \item \textbf{Constraints:}
+    \begin{itemize}
+        \item Missing values in \texttt{Age}, \texttt{Cabin}, and occasionally \texttt{Embarked}.
+        \item High variability in string-based variables such as \texttt{Name} and \texttt{Ticket}.
+        \item Class imbalance between survivors and non-survivors.
+    \end{itemize}
+
+    \item \textbf{Sensitivity:}
+    Small modifications to key features (e.g., \texttt{Age}, \texttt{Sex}, or \texttt{Pclass})
+    have a significant impact on the target output due to their strong correlations.
+
+    \item \textbf{Observed Complexity:}
+    Feature interactions are nonlinear, and certain combinations of variables produce
+    inconsistent or unpredictable patterns (e.g., passengers with nearly identical
+    profiles having opposite survival outcomes).
+
+    \item \textbf{Dataset-Level Randomness:}
+    Variability in \texttt{Cabin} availability, unusual ticket formats, and outliers in
+    \texttt{Fare} introduce irregularities into the dataset.
 \end{itemize}
 
-\subsection*{User-Centric Requirements}
+\subsection*{1.2 Implications for System Design}
+
+These analytical findings directly influence the architectural decisions required for
+Workshop \#2:
 
 \begin{itemize}
-    \item \textbf{UR-1 – Simplicity:} Execute workflow in one notebook sequence.
-    \item \textbf{UR-2 – Interpretability:} Provide explainable feature relationships.
-    \item \textbf{UR-3 – Security:} Prevent exposure of private Kaggle data.
+    \item \textbf{The system must manage missing data} through preprocessing steps such as
+    imputation or removal.
+
+    \item \textbf{Variable encoding is essential}, especially for \texttt{Sex}, \texttt{Embarked},
+    and name-derived titles.
+
+    \item \textbf{Modeling components must address feature nonlinearity}
+    (e.g., through tree-based models or engineered features).
+
+    \item \textbf{The design must incorporate sensitivity handling:}
+    highly impactful variables require monitoring during modeling and evaluation.
+
+    \item \textbf{Chaos-handling mechanisms arise naturally from the dataset:}
+    unpredictable or inconsistent instances require robust evaluation and possibly
+    ensemble models.
+
+    \item \textbf{The architecture must be modular:}
+    separating ingestion, preprocessing, modeling, evaluation, and output generation
+    aligns with the dataset’s internal structure and ensures maintainability.
 \end{itemize}
 
-\noindent
-These requirements translate the \textit{Workshop 1} insights into engineering goals that ensure an \textbf{accurate, reproducible, and resilient} predictive system.
+\subsection*{1.3 Transition Toward Workshop \#2 Design}
+
+Workshop \#1 provided a systemic understanding of the data and its internal dynamics.
+Workshop \#2 builds on this foundation by transforming that analytic perspective into a
+structured, engineering-oriented system design. The insights above guide the requirements,
+architecture, and implementation strategy developed in the following sections.
 
 
+% ----------------------------------------------------------
+\section*{2. System Requirements}
+
+This section translates the insights obtained in Workshop \#1 into concrete and measurable design requirements. 
+All requirements are derived strictly from the structure, limitations, and behavior of the Kaggle Titanic dataset, 
+as analyzed previously (e.g., missing values, categorical dependencies, variable sensitivity, and internal relationships).
+
+\subsection*{2.1 Translation of Analysis Findings into Design Requirements}
+
+Based on the systemic analysis, the system must satisfy requirements that directly address the dataset's characteristics:
+
+\begin{itemize}
+    \item \textbf{R1 — Handling Missing Data (Reliability):}  
+    Since variables such as \texttt{Age} and \texttt{Cabin} contain missing values, the system must include 
+    robust imputation or exclusion mechanisms to prevent instability in downstream processing.
+
+    \item \textbf{R2 — Consistent Categorical Processing (Performance \& Accuracy):}  
+    The model must standardize categorical features (e.g., \texttt{Sex}, \texttt{Embarked}, \texttt{Pclass}) using 
+    deterministic encoding strategies to reduce variability and ensure reproducibility.
+
+    \item \textbf{R3 — Management of Sensitive Attributes (Stability):}  
+    Variables identified as highly sensitive in Workshop \#1 (e.g., \texttt{Sex}, \texttt{Pclass}, \texttt{Age}) must be 
+    treated with stable transformations that avoid amplification of small perturbations.
+
+    \item \textbf{R4 — Feature Interaction Support (Model Robustness):}  
+    The system must support engineered features derived from dataset relationships, such as 
+    \texttt{FamilySize = SibSp + Parch + 1} or titles extracted from \texttt{Name}, since these reflect internal structure 
+    observed in the dataset.
+
+    \item \textbf{R5 — Traceability and Repeatability (Maintainability):}  
+    All preprocessing steps must be versioned so that the same transformation pipeline can be recreated consistently.
+
+    \item \textbf{R6 — Evaluation Consistency (Quality Assurance):}  
+    The model evaluation process must compute accuracy in alignment with Kaggle requirements, ensuring comparability 
+    with the competition's scoring mechanism.
+\end{itemize}
+
+These requirements ensure that the system design is directly aligned with the dataset’s internal constraints and sensitivities.
+
+\subsection*{2.2 User-Centric Needs}
+
+Although the system is primarily data-driven, several user-focused considerations remain relevant:
+
+\begin{itemize}
+    \item \textbf{U1 — Interpretability:}  
+    Users (students or analysts) must be able to understand how inputs such as \texttt{Sex}, \texttt{Pclass}, and \texttt{FamilySize} 
+    affect the prediction. This may require simple model explanations or transparency of preprocessing steps.
+
+    \item \textbf{U2 — Ease of Use:}  
+    The system should allow users to run the preprocessing and modeling pipeline with minimal configuration, following a 
+    clear sequence aligned with the architecture defined earlier.
+
+    \item \textbf{U3 — Reproducibility for Learning:}  
+    Because this system is part of an academic project, users must be able to reproduce results consistently for validation 
+    and experimentation.
+
+    \item \textbf{U4 — Data Safety (If Applicable):}  
+    Even though the dataset is public and anonymized, the system must avoid unintended modifications to source files 
+    (\texttt{train.csv}, \texttt{test.csv}), ensuring integrity during processing.
+\end{itemize}
+
+These user-centric requirements ensure that the system remains accessible, transparent, and reliable for those interacting with it.
+
+
+% ----------------------------------------------------------
 \section*{3. High-Level Architecture}
+
+Based on the systemic analysis from Workshop \#1, the proposed architecture evolves from a simple input-output model to a \textbf{robust, layered design} aligned with ISO 25010 software quality standards. This modular approach ensures that the system handles the dataset's intrinsic complexity, sensitivity, and missing information effectively.
+
+The architecture is organized into three distinct layers, each responsible for a specific quality attribute of the system:
+
+\subsection*{3.1 Reliability Layer (Data Integrity)}
+This layer acts as the system's defensive shield. Its primary function is to manage the "Constraints" and "Chaos" identified in the dataset (e.g., missing Age/Cabin, outliers in Fare).
+\begin{itemize}
+    \item \textbf{Data Validation \& Ingestion:} Receives raw data from \texttt{train.csv} and checks for structural consistency.
+    \item \textbf{Imputation Module:} Handles missing values deterministically to prevent system instability.
+    \item \textbf{Outlier Management:} Identifies and neutralizes inconsistent data points (such as extreme Fares in lower classes) before they propagate to the modeling stage.
+\end{itemize}
+
+\subsection*{3.2 Maintainability \& Scalability Layer (Core Processing)}
+To address the requirement for modularity[cite: 43, 59], the transformation logic is decoupled into independent modules. This allows for specific adjustments without affecting the entire pipeline.
+\begin{itemize}
+    \item \textbf{Transformation Pipeline:} A central orchestrator that manages data flow.
+    \item \textbf{Feature Engineering Modules:}
+    \begin{itemize}
+        \item \textit{Text Processing:} Extracts titles from \texttt{Name} to capture social status.
+        \item \textit{Numeric Processing:} Handles binning for \texttt{Age} and \texttt{Fare} to reduce sensitivity to small variations.
+        \item \textit{Group Processing:} Combines \texttt{SibSp} and \texttt{Parch} to recreate family structures.
+    \end{itemize}
+    \item \textbf{Unified Feature Vector:} Merges all processed signals into a standardized format ready for classification.
+\end{itemize}
+
+\subsection*{3.3 Usability Layer (Output \& Interpretation)}
+Focusing on the user-centric requirements[cite: 66], this layer ensures that the system's output is not just a prediction, but an interpretable result.
+\begin{itemize}
+    \item \textbf{Classification Logic:} Maps the unified features to the target variable using the trained model.
+    \item \textbf{Output Generation:} Produces the final binary state (\texttt{Survived}: 0 or 1).
+    \item \textbf{Confidence Metadata:} Provides auxiliary information (probability scores) to help users understand the certainty of the prediction, addressing the "Interpretability" requirement.
+\end{itemize}
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{Figure1.png}
-    \caption{Architecture of the Kaggle competition environment.}
-    \label{fig:system-architecture}
+    % Asegúrate de tener la imagen del diagrama guardada con este nombre
+    \includegraphics[width=0.9\textwidth]{Workshop 1/architecture_diagram.png}
+    \caption{Robust System Architecture Diagram showing the Reliability, Maintainability, and Usability layers.}
+    \label{fig:robust_arch}
 \end{figure}
 
-\noindent
-\textbf{Figure \ref{fig:system-architecture}} illustrates the architecture of the Kaggle competition environment. Competitors access the competition page, download datasets, train models in notebooks, and submit predictions for evaluation. The system computes accuracy, updates leaderboards, and integrates community interaction via forums and repositories.
+% ----------------------------------------------------------
+\section*{4. Addressing Sensitivity and Chaos}
+
+Based on the systemic behaviour identified in Workshop~1, the Titanic dataset exhibits 
+sensitivity and chaotic characteristics that influence the stability of the predictive system. 
+In this workshop, these findings are translated into concrete design strategies that reinforce 
+robustness and reduce unpredictable system behaviour.
+
+\subsection*{4.1 Sensitivity in the Dataset}
+
+The system is highly sensitive to variations in several input variables. Small changes in 
+certain features produce disproportionately large effects on the output \texttt{Survived}. 
+This sensitivity arises from the statistical structure of the dataset:
+
 \begin{itemize}
-    \item \textbf{User:} The user will be an ordinary person regardless of their occupation; in reality, they only need to have an interest in the world of systems analysis, with access to practically the entire system except for certain interactions that will be carried out internally by the system.
-    \item \textbf{Interface \& competition page:} This module allows the user to interact directly with the competency environment, meaning that they are allowed to access the competency and view all the necessary information to understand the environment. Additionally, there are community environments that allow users to ask questions about the competencies.
-    \item \textbf{Data \& Notebooks/Compute:} This module allows the user to dive into the competition, accessing the data that will be used, the testing environment, and resources such as the notebooks provided by Kaggle for a better understanding of the competition.
-    \item \textbf{Storage/DB:} This module is not directly accessible to the user but interacts with them indirectly by sending information that will be stored for later viewing, as in the leaderboard or in the different saved files.
-    \item \textbf{Submissions, Evolution \& Leaderboard:} This module allows the user to finalize their attempt in the competition by submitting the presented model to improve the prediction algorithm, as well as assigning a ranking by comparing it with the other submitted solutions.
+    \item \textbf{Sex}: This variable has a strong and nonlinear relationship with the target. 
+    Minor reassignments or misclassifications drastically change the prediction.
+    
+    \item \textbf{Age}: Missing values and continuous variation introduce instability. 
+    Small modifications after imputation significantly alter predicted probabilities.
+    
+    \item \textbf{Pclass}: Acts as a proxy for socioeconomic grouping; changes in class 
+    assignment modify multiple related behaviours (fare distribution, embarked patterns).
+    
+    \item \textbf{Cabin}: The irregularity and sparsity of this feature create fragile dynamics. 
+    When present, it carries strong information; when absent, imputations add uncertainty.
 \end{itemize}
-\section*{4. Addressing Sensitivity and Chaos} 
-It is inevitable to deal with random factors. In the case of the Titanic, we can imagine damaged gates, someone being far from the escape routes, falling awkwardly into the water and being unable to stay afloat. There are many factors that can have an impact. Likewise, we find nonlinear relationships which will be somewhat random since there is nothing that can describe them accurately, as a linear function would. For all the above reasons, a robust and well-divided system is proposed in which it is possible to identify the implications of the elements among themselves more clearly, aiming for a better approximation of who has the capacity to survive and who does not. This is evidenced through the tests provided by the competition, where cases of people with very similar characteristics but opposite outcomes are found, although we also understand that it could be due to a lack of consideration of important variables.\\
-It would be extremely positive to start taking into account those values that we find to be random for a more exhaustive review and to find out which other variables could affect both sensitivity, as well as an unexpected variable or others.
+
+To mitigate sensitivity, the system design incorporates:
+\begin{itemize}
+    \item Controlled imputation methods with versioning to avoid inconsistent behaviour.
+    \item Normalization and encoding pipelines that stabilize variable transformations.
+    \item Sensitivity-aware modeling (ensemble methods and cross-validation).
+\end{itemize}
+
+\subsection*{4.2 Chaotic Behaviour in the Dataset System}
+
+Although the dataset is static, the relationships among variables exhibit chaotic tendencies 
+from a system dynamics perspective. These patterns do not arise from external historical 
+factors, but from the internal structure of the data itself:
+
+\begin{itemize}
+    \item \textbf{Outliers} in Fare and Age introduce unpredictable deviations.
+    \item \textbf{Passengers with nearly identical profiles} sometimes have opposite 
+    survival outcomes, indicating internal variability that cannot be fully captured.
+    \item \textbf{Irregular formats in Ticket and Cabin} create structural noise that 
+    propagates through preprocessing.
+    \item \textbf{Nonlinear feature interactions} produce sudden changes in prediction 
+    when multiple variables shift slightly at the same time.
+\end{itemize}
+
+\subsection*{4.3 Design Strategies to Handle Chaos}
+
+To reduce the influence of chaotic elements, the architecture incorporates:
+
+\begin{itemize}
+    \item \textbf{Feedback monitoring}: The Evaluation Layer continuously checks for 
+    unstable behaviours in the model's predictions.
+    
+    \item \textbf{Robust preprocessing}: Feature engineering and normalization limit the 
+    amplification of small anomalies.
+
+    \item \textbf{Model ensembles}: Combining multiple models reduces the effect of 
+    unstable patterns present in any single model.
+
+    \item \textbf{Performance drift detection}: If chaotic behaviour increases 
+    (e.g., sudden changes in evaluation metrics), the system flags the model and 
+    triggers a controlled retraining process.
+\end{itemize}
+
+\subsection*{4.4 Summary}
+
+The system design explicitly addresses the sensitivity and chaotic tendencies identified 
+in Workshop~1. Through preprocessing controls, model stability techniques, and feedback 
+mechanisms, the architecture maintains equilibrium and reduces unpredictable behaviour, 
+ensuring a more reliable and resilient predictive system.
+
+
+
+% ----------------------------------------------------------
+\section*{5. Technical Stack}
+
+The technical stack defines the set of tools and technologies that support each stage 
+of the system architecture designed in Workshop 2. The selected stack reflects the 
+requirements identified in the previous items: modularity, clarity, reproducibility, and 
+the ability to manage sensitivity and variation in the Kaggle dataset.
+
+\subsection*{5.1 Tools and Technologies}
+
+\textbf{Data Layer:}  
+\begin{itemize}
+    \item \textbf{Python} — Primary programming language used for the entire pipeline.
+    \item \textbf{Pandas} — Data ingestion, loading of \texttt{train.csv} and \texttt{test.csv}, 
+    handling missing values, and performing transformations consistent with the dataset structure.
+    \item \textbf{NumPy} — Numerical operations required during preprocessing and feature handling.
+\end{itemize}
+
+\textbf{Preprocessing and Modeling Layer:}  
+\begin{itemize}
+    \item \textbf{Scikit-learn} — Main library for preprocessing steps (encoding, imputation) 
+    and model training. Includes algorithms such as Logistic Regression, Decision Trees, 
+    Random Forests, and others suitable for a binary classification task.
+\end{itemize}
+
+\textbf{Evaluation Layer:}  
+\begin{itemize}
+    \item \textbf{Scikit-learn metrics} — Used to compute accuracy and other internal metrics 
+    that help quantify sensitivity and model stability.
+    \item \textbf{Matplotlib / Seaborn} — Visualization tools used to analyze feature behavior, 
+    correlations, and sensitivity patterns within the system.
+\end{itemize}
+
+\textbf{Interfaces and Reporting Layer:}  
+\begin{itemize}
+    \item \textbf{Jupyter Notebooks or Kaggle Notebooks} — Environment for running experiments, 
+    documenting the system process, and generating reproducible analyses.
+\end{itemize}
+
+\textbf{Version Control:}  
+\begin{itemize}
+    \item \textbf{Git + GitHub} — Ensures traceability of system modifications, updates to 
+    preprocessing steps, and model iterations. Supports collaboration and workshop submission.
+\end{itemize}
+
+\subsection*{5.2 Justification}
+
+The selected stack aligns with the system requirements defined earlier:
+
+\begin{itemize}
+    \item \textbf{Modularity:} Each tool contributes to a specific subsystem 
+    (data ingestion, preprocessing, modeling, evaluation), matching the architecture 
+    defined in Item 3.
+    \item \textbf{Reproducibility:} Python, Pandas, and Scikit-learn ensure deterministic 
+    operations, reducing sensitivity to uncontrolled variability.
+    \item \textbf{Traceability:} Git and GitHub enable continuous documentation of 
+    architectural and preprocessing changes.
+    \item \textbf{Interpretability:} Visualization libraries support sensitivity analysis, 
+    making the internal behavior of the model understandable.
+\end{itemize}
+
+This technical stack provides the necessary foundation to implement the designed system, 
+addressing the variability found in the dataset while ensuring clarity, structure, 
+and maintainability across the entire workflow.
+
+
 \end{document}
