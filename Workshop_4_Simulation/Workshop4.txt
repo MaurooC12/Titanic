@@ -1,0 +1,268 @@
+\documentclass[12pt]{report}
+
+% ================== PACKAGES ==================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{setspace}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{hyperref} % Required for links
+\usepackage{listings}
+\usepackage{xcolor}
+
+% ================== HYPERLINK SETUP ==================
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+
+% ================== CODE STYLING ==================
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+
+% ================== PAGE SETTINGS ==================
+\geometry{a4paper, margin=1in}
+\onehalfspacing
+
+\begin{document}
+
+% ================== TITLE PAGE ==================
+\begin{titlepage}
+    \centering
+    {\Large \textbf{Titanic: Machine Learning from Disaster} \par}
+    \vspace{0.5cm}
+    {\large \textbf{System Analysis Project - Workshop 4} \par}
+    \vspace{3cm}
+    
+    {\large 
+    Julián Carvajal Garnica \\ 
+    20242020024 \\[0.5cm]
+    Andrés Mauricio Cepeda Villanueva \\
+    20242020010 \\[0.5cm]
+    Jhonatan David Moreno Barragán \\
+    20201020094 \\[0.5cm]
+    Andrés Camilo Ramos Rojas \\
+    20242020005
+    }
+    
+    \vfill
+    
+    School of Engineering, Universidad Distrital Francisco José de Caldas \\
+    System Analysis Course \\
+    Teacher: Carlos Andrés Sierra \\
+    Bogotá D.C. \\
+    2025
+\end{titlepage}
+
+% ================== REPORT CONTENT ==================
+\chapter*{Workshop 4: Kaggle System Simulation}
+
+\section*{1. Data Preparation}
+
+The first phase of the simulation involved acquiring and preparing the raw data to serve as the input for the system. The dataset was sourced directly from the official Kaggle competition page. This dataset acts as the primary input source for our system architecture, containing the passenger manifest which serves as the "initial state" for our simulations.
+
+\subsection*{1.1 Dataset Characteristics and Constraints}
+Upon ingesting the data, we performed a validation check to assess the structural integrity of the system inputs. This step confirmed the critical constraints previously identified in Workshop 1. Specifically, the system exhibited significant instability due to missing information:
+\begin{itemize}
+    \item \textbf{Age Variable:} Contained 177 missing entries. Since Age is a continuous variable used for survival probability, these gaps introduce "noise" into the system.
+    \item \textbf{Cabin Variable:} Contained 687 missing entries (approx. 77\% of the data). This high level of uncertainty makes the variable unreliable for deterministic modeling without heavy processing.
+\end{itemize}
+
+Figure \ref{fig:constraints} illustrates the initial state of the dataset, highlighting these structural weaknesses before any engineering intervention.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{initial_constraints.png}
+    \caption{Data Preparation: Initial system check showing critical missing values in Age and Cabin variables.}
+    \label{fig:constraints}
+\end{figure}
+
+\subsection*{1.2 Cleaning and Preprocessing (Reliability Layer)}
+To stabilize the system and enable accurate simulation, we implemented the \textbf{Reliability Layer} designed in Workshop 3. This layer acts as a filter that transforms raw, chaotic data into structured information. The specific actions taken were:
+
+\begin{enumerate}
+    \item \textbf{Imputation Strategy:} Missing values in the `Age` variable were filled using the median value. This method was chosen over the mean to reduce sensitivity to outliers (extreme ages). `Embarked` missing values were filled with the mode (most common port).
+    \item \textbf{Feature Encoding:} Categorical variables such as `Sex` (male/female) and `Embarked` (S/C/Q) were converted into numerical formats (0/1/2). This step is essential as both the Machine Learning model and the Cellular Automata require numerical inputs to calculate probabilities and movement vectors.
+    \item \textbf{Noise Reduction:} The `Cabin` variable was excluded from the simulation inputs due to its excessive missing data, which would have introduced unnecessary chaos.
+\end{enumerate}
+
+As a result, the system reached a stable state with zero missing values, as demonstrated in Figure \ref{fig:clean}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{clean_data_state.png}
+    \caption{Cleaned Dataset State. The Reliability Layer successfully stabilized the inputs, resulting in zero missing values.}
+    \label{fig:clean}
+\end{figure}
+
+% ----------------------------------------------------------
+\section*{2. Simulation Planning}
+
+To thoroughly analyze the system's behavior, we defined two distinct simulation scenarios. Each scenario is designed to test a specific aspect of the Titanic system architecture:
+
+\begin{itemize}
+    \item \textbf{Scenario 1: Data-driven Simulation (Learning Dynamics).} \\
+    The objective of this scenario is to use a Machine Learning model (Random Forest) to simulate how the system "learns" from the input data. We aim to identify the \textit{Sensitivity} of the system: which variables (Sensors) trigger the strongest response in the output (Survival)? This allows us to validate mathematically which passenger attributes carried the most weight.
+
+    \item \textbf{Scenario 2: Event-based Simulation (Spatial Dynamics).} \\
+    The objective of this scenario is to model the physical chaos of the evacuation. We adapt the dataset into a Cellular Automata grid where each passenger is an agent. By defining movement rules based on Class and Gender, we aim to observe \textit{Emergent Behavior}—complex patterns (like segregation or blocking) that arise from simple local interactions.
+\end{itemize}
+
+% ----------------------------------------------------------
+\section*{3. Simulation Implementation}
+
+The complete source code, including the Jupyter Notebook (`.ipynb`) and environment requirements, is hosted in the project repository:
+
+\vspace{0.5cm}
+\begin{center}
+    \rule{0.85\textwidth}{0.5pt} \\ [1em] % Línea superior
+    \textbf{Project Repository & Source Code:} \\ [0.5em]
+    \href{https://github.com/MaurooC12/Titanic/blob/c6e560fac152f036f9b76c0da70a5be90c3a6b07/Workshop_4_Simulation/Workshop4_Sim.ipynb}
+    {\texttt{github.com/MaurooC12/Titanic/.../Workshop4\_Sim.ipynb}} \\ [1em]
+\end{center}
+\vspace{0.5cm}
+
+\subsection*{3.1 Scenario 1: Random Forest Model Logic}
+For the data-driven simulation, we selected the Random Forest Classifier from the `scikit-learn` library. This model constructs 100 decision trees (`n_estimators=100`) to evaluate the data. The implementation logic follows these steps:
+\begin{enumerate}
+    \item \textbf{Data Splitting:} The clean data is divided into Training (80\%) and Validation (20\%) sets. This prevents the system from "memorizing" the answers and forces it to learn general patterns.
+    \item \textbf{Training:} The model iterates through the training data, learning the correlation between inputs (Sex, Fare, Age, Class) and the output (Survived).
+    \item \textbf{Feature Extraction:} After training, we extract the `feature_importances_` vector to quantify the influence of each variable.
+\end{enumerate}
+
+\begin{lstlisting}[language=Python, caption=Scenario 1 Implementation Logic]
+# Modeling Layer (Data-driven)
+# We initialize the model with 100 estimators for robustness
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+
+# The model learns the relationship between X (Attributes) and y (Survival)
+model.fit(X_train, y_train)
+
+# Sensitivity Analysis extraction to understand system drivers
+importances = model.feature_importances_
+\end{lstlisting}
+
+\subsection*{3.2 Scenario 2: Cellular Automata Logic}
+For the event-based simulation, we mapped the ship to a $20 \times 20$ grid. The logic governs how agents (passengers) move at each time step ($t$). The rules are derived from historical and data analysis:
+
+\begin{enumerate}
+    \item \textbf{Goal Vector:} Every agent attempts to move to the row above them ($r \rightarrow r-1$), simulating the movement towards the lifeboats on the top deck.
+    \item \textbf{Priority Constraints:} Movement probabilities ($P_{move}$) were calibrated to reflect the observed survival rates in the dataset. Class 1 agents are assigned $P_{move} = 0.9$ (approximating the high survival rate of $\sim 63\%$), while Class 3 agents are assigned $P_{move} = 0.4$ (reflecting the low survival rate of $\sim 24\%$). This ensures the rules are data-driven.
+    \item \textbf{Conflict Resolution:} The grid strictly enforces that two agents cannot occupy the same cell. If a high-priority agent moves into a space, they effectively block any lower-priority agent behind them.
+\end{enumerate}
+
+% --- WORKFLOW DIAGRAM ---
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{workflow_diagram.png}
+    \caption{System Workflow Validation. The diagram illustrates how data flows through the Reliability Layer before feeding into the dual simulation engines, ensuring stability.}
+    \label{fig:workflow}
+\end{figure}
+
+% ----------------------------------------------------------
+\section*{4. Executing the Simulations}
+
+The simulations were executed in the Python environment, generating visual and statistical outputs that reveal the system's internal behavior.
+
+\subsection*{4.1 Scenario 1 Execution: Sensitivity Analysis}
+Upon executing the Random Forest model, the system achieved a predictive accuracy of over 83\% on unseen data. More importantly, the sensitivity analysis revealed the hierarchy of survival factors. As shown in Figure \ref{fig:sensitivity}, `Fare` and `Sex` emerged as the dominant variables. This confirms that the system is not random; it is heavily biased by socioeconomic status and gender. `Age` also plays a significant role, validating the need for the robust imputation performed in Section 1.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{sensitivity_analysis.png}
+    \caption{Scenario 1 Results: Feature Importance graph showing that Fare and Sex are the most critical variables driving the system's output.}
+    \label{fig:sensitivity}
+\end{figure}
+
+\subsection*{4.2 Scenario 2 Execution: Emergent Behavior}
+The cellular automata simulation was executed for 15 discrete time steps. Figure \ref{fig:automata} visualizes the final state of the grid. A clear emergent pattern is visible:
+\begin{itemize}
+    \item \textbf{Top Rows (Lifeboats):} Saturated with Class 1 agents (represented in Yellow/Green). Their high priority allowed them to navigate the grid quickly.
+    \item \textbf{Bottom Rows:} Class 3 agents (represented in Blue/Purple) remained trapped at the bottom. This was not explicitly programmed but emerged because the "faster" agents occupied the available space, creating a physical bottleneck.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{cellular_automata.png}
+    \caption{Scenario 2 Results: Spatial segregation emerging from priority rules. Yellow dots (Class 1) block the path for Blue dots (Class 3).}
+    \label{fig:automata}
+\end{figure}
+
+% ----------------------------------------------------------
+\section*{5. Results and Discussion}
+
+Following the execution of both scenarios, we compiled the results to analyze the system's behavior under different simulation paradigms.
+
+\subsection*{5.1 Comparative Analysis}
+As requested in the guide, we compare the outcomes of the Data-driven (ML) and Event-based (Automata) simulations. Table \ref{tab:comparison} summarizes the key findings.
+
+\begin{table}[H]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{|p{3cm}|p{6cm}|p{6cm}|}
+    \hline
+    \textbf{Metric} & \textbf{Scenario 1: Random Forest} & \textbf{Scenario 2: Cellular Automata} \\
+    \hline
+    \textbf{Objective} & 
+    Identify variable sensitivity (Weights). & 
+    Observe emergent spatial behavior. \\
+    \hline
+    \textbf{Chaos Source} & 
+    \textbf{Data Noise:} Missing ages and high variance in Fare distribution. & 
+    \textbf{Physical Conflict:} Agents blocking each other due to priority rules. \\
+    \hline
+    \textbf{Key Finding} & 
+    \texttt{Fare} and \texttt{Sex} are the strongest predictors. & 
+    Priority movement creates an artificial "wall" that segregates classes. \\
+    \hline
+    \textbf{Conclusion} & 
+    The system is statistically deterministic but heavily biased. & 
+    Social rules (priority) translate into physical survival advantages. \\
+    \hline
+    \end{tabular}
+    \caption{Comparison of Simulation Outcomes. Both approaches converge on the finding that socioeconomic status acts as the primary filter for system output.}
+    \label{tab:comparison}
+\end{table}
+
+\subsection*{5.2 Discussion on Chaos and Architecture}
+The simulations provide a dual validation of the architecture designed in Workshop 2:
+
+\begin{itemize}
+    \item \textbf{Handling Data Chaos:} The \textbf{Reliability Layer} (Section 1) was successful. The Random Forest model achieved high accuracy ($>83\%$) only because the input data was stabilized (imputed) beforehand. Without this layer, the "Age" noise would have degraded the model's performance.
+    
+    \item \textbf{Structural Chaos (The Butterfly Effect):} Both simulations reveal that the Titanic system is highly sensitive to initial conditions. A minor change in a passenger's input vector (e.g., switching `Pclass` from 3 to 1) does not result in a linear change in outcome; rather, it drastically flips the survival probability and alters the agent's entire trajectory in the grid. This confirms the chaotic nature of the system: small input perturbations lead to divergent macroscopic outcomes (Life or Death).
+\end{itemize}
+
+\vspace{0.5cm}
+\textbf{Final Architectural Validation:}
+The successful execution of both simulations serves as a stress test for the architecture proposed in Workshop 2. The system demonstrated \textit{Fault Tolerance} by absorbing incomplete inputs (via the Reliability Layer) without ceasing operations. Furthermore, the modular separation allowed us to swap simulation engines (ML vs. Cellular Automata) without restructuring the data pipeline. This confirms that the designed architecture adheres to the ISO 25010 standards for Reliability and Maintainability initially targeted.
+
+\end{document}
