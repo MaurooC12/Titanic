@@ -7,6 +7,7 @@
 \usepackage{setspace}
 \usepackage{geometry}
 \usepackage{graphicx}
+\usepackage{float}
 
 % Configuración de márgenes
 \geometry{a4paper, margin=1in}
@@ -20,156 +21,227 @@
 \begin{titlepage}
     \centering
     
-    {\Large Workshops of the System analysis project \par}
+    % ----- TÍTULO PRINCIPAL -----
+    {\Large \textbf{Titanic: Kaggle Dataset System Analysis} \par}
+    \vspace{0.5cm}
+    {\large \textbf{Workshop No. 1 — Systems Engineering Perspective} \par}
     \vspace{3cm}
     
+    % ----- AUTORES -----
     {\large 
     Julián Carvajal Garnica \\ 
     20242020024 \\[0.5cm]
     Andrés Mauricio Cepeda Villanueva \\
     20242020010 \\[0.5cm]
-    Jhonatan David Moreno Barragan \\
-    20201020094\\[0.5cm]
+    Jhonatan David Moreno Barragán \\
+    20201020094 \\[0.5cm]
     Andrés Camilo Ramos Rojas \\
     20242020005
     }
     
     \vfill
     
-    Faculty of Engineering, Universidad Distrital Francisco José de Caldas \\
-    System Analysis \\
-    Carlos Andrés Sierra \\
+    % ----- INSTITUCIÓN -----
+    School of Engineering, Universidad Distrital Francisco José de Caldas \\
+    System Analysis Course \\
+    Teacher: Carlos Andrés Sierra \\
     Bogotá D.C. \\
     2025
     
 \end{titlepage}
 
 % ================== PARTE 1 ==================
-\chapter*{Part 1 of the System Analysis project}
+\chapter*{Part 1 of the System Analysis Project}
 
 \section*{1. Competition Overview}
 
-The sinking of the Titanic on April 15, 1912, during its first voyage, is one of the most infamous shipwrecks in history. After hitting an iceberg, the lack of sufficient lifeboats led to 1,502 deaths out of 2,224 people onboard. Although luck played a role in survival, some groups had higher chances of surviving than others.
+The Kaggle competition \textit{“Titanic: Machine Learning from Disaster”} provides a structured dataset containing passenger information and a binary target variable indicating survival (1) or non-survival (0). The challenge consists of predicting this outcome using the available attributes.
 
-The Kaggle Competition ``Titanic: Machine Learning from Disaster'' challenges participants to predict which passengers survived the sinking of the Titanic. 
+Although commonly used for predictive modeling, in this workshop the dataset is treated as a \textbf{closed system} whose components, interactions, and constraints can be analyzed from a systems engineering perspective. All observations in this document are based exclusively on the variables and information provided directly by Kaggle.
 
-\textbf{Objectives:}
+\subsection*{Dataset Structure}
+
+The dataset is composed of:
+
 \begin{itemize}
-    \item The main objective of this project is to develop a predictive model capable of determining, based on the provided passenger information, whether an individual aboard the Titanic would survive or not. The prediction is formulated as a binary classification problem, where the output variable takes the value 0 for passengers who did not survive and 1 for those who did.
-    \item To understand how machine learning algorithms operate to derive a concrete and reliable solution to the survival prediction problem.
-    \item Improve the predictive system after obtaining an initial solution by incorporating additional factors and refinements, thereby increasing the overall accuracy and robustness of the model.
+    \item \texttt{train.csv}: Passenger attributes and survival labels.
+    \item \texttt{test.csv}: Passenger attributes without labels.
+    \item \texttt{gender\_submission.csv}: Example submission file.
 \end{itemize}
 
-\textbf{Data structure:}
+\noindent
+\textbf{Variables included in the dataset:}
 \begin{itemize}
-    \item \texttt{train.csv} → passenger features + target Survived.
-    \item \texttt{test.csv} → passenger features without target.
-    \item \texttt{gender\_submission.csv} → example of the expected submission format.
+    \item \textbf{PassengerId}: Numerical identifier.
+    \item \textbf{Pclass}: Ticket class (1, 2, or 3).
+    \item \textbf{Name}: Full name (contains titles such as Mr., Mrs., Miss, etc.).
+    \item \textbf{Sex}: Male or female.
+    \item \textbf{Age}: Age in years (contains missing values).
+    \item \textbf{SibSp}: Number of siblings or spouses aboard.
+    \item \textbf{Parch}: Number of parents or children aboard.
+    \item \textbf{Ticket}: Ticket code.
+    \item \textbf{Fare}: Ticket fare.
+    \item \textbf{Cabin}: Cabin identifier (mostly missing).
+    \item \textbf{Embarked}: Port of embarkation (C, Q, or S).
 \end{itemize}
 
-Features: Passenger class, sex, age, fare, cabin, port of departure, etc. \\
-Target variable: Survived. \\
-Metric: Accuracy (percentage of correct predictions). \\
-Constraints: Submissions must include only PassengerId and Survived. 
-
-Example:
-\begin{verbatim}
-PassengerId,Survived
-892,0
-893,1
-894,0
-\end{verbatim}
+\noindent
+\textbf{Target Variable:} Survived (0 or 1).  
+\textbf{Evaluation Metric:} Accuracy on Kaggle’s hidden test labels.  
+\textbf{System Constraints:} Missing data, categorical encoding, and strict two-column submission format.
 
 % ------------------------------
 \section*{2. System Analysis Report}
 
 \subsection*{Systemic Analysis}
-Its goal is to estimate the survival of the passengers based on individual characteristics. To understand this system, we must identify its components, relationships, and boundaries.
 
-\textbf{System Elements:}
+From a systems engineering perspective, the Kaggle Titanic dataset models a logical system where each passenger instance represents a unit characterized by multiple attributes. The system’s purpose is to map these attributes to a binary output (\texttt{Survived}), forming an interpretable input–output structure.
+
+\subsubsection*{System Elements}
+
 \begin{itemize}
-    \item Input data:
+    \item \textbf{Inputs:}  
+    Passenger demographic, social, and ticket-related attributes:
     \begin{itemize}
-        \item PassengerId: Unique identifier
-        \item Pclass: Ticket class (1st, 2nd, 3rd)
-        \item Name: Full name
-        \item Sex: Gender
-        \item Age: Age in years
-        \item SibSp: Number of siblings/spouses aboard
-        \item Parch: Number of parents/children aboard
-        \item Ticket: Ticket number
-        \item Fare: Ticket fare
-        \item Cabin: Cabin number
-        \item Embarked: Port of embarkation (C = Cherbourg, Q = Queenstown, S = Southampton)
+        \item Sex, Age
+        \item Pclass
+        \item SibSp, Parch
+        \item Fare, Ticket
+        \item Cabin (when available)
+        \item Embarked
+        \item Name (derivable titles)
     \end{itemize}
-    \item Target output:
+
+    \item \textbf{Processes (Dataset Interpretation):}
+    These are transformations or interactions observable strictly from the data:
     \begin{itemize}
-        \item Survived: Binary label (0 = not survive, 1 = survived). Present in \texttt{train.csv}.
+        \item Group structure encoded by SibSp + Parch
+        \item Socioeconomic stratification encoded by Pclass and Fare
+        \item Implicit categorization from titles in Name
+        \item Embarked distribution patterns
     \end{itemize}
-    \item Evaluation Metric: Accuracy score calculated by Kaggle on the test set.
-    \item Constraints: Submission format (PassengerId, Survived), missing values, class imbalance.
-    \item External Environment: Kaggle app, competition rules, leaderboard dynamics.
+
+    \item \textbf{Output:}
+    \begin{itemize}
+        \item Survived (1) or Did Not Survive (0)
+    \end{itemize}
+
+    \item \textbf{Constraints within the Dataset System:}
+    \begin{itemize}
+        \item Missing values in Age and Cabin
+        \item Skewed distribution of Cabin availability
+        \item Categorical variables requiring interpretation
+        \item Limited and fixed variable set
+    \end{itemize}
+
 \end{itemize}
 
-\textbf{Relationships Between Elements:}
-Variables do not act independently. For example:
+\subsection*{Relationships Between Elements}
+
+The dataset implies interactions between variables that shape the system behavior:
+
 \begin{itemize}
-    \item Pclass is related to Fare and Cabin, reflecting socioeconomic status.
-    \item Sex and Age combined strongly influence survival probability.
-    \item Embarked correlates with Pclass and Fare, revealing boarding patterns by class.
+    \item \textbf{Pclass ↔ Fare:} Higher classes generally correspond to higher fares.
+    \item \textbf{Sex ↔ Survived:} The dataset shows different survival rates across genders.
+    \item \textbf{Age ↔ Survived:} Younger passengers show different patterns than older ones.
+    \item \textbf{SibSp + Parch ↔ Grouping Effects:} Larger family groups exhibit distinct survival patterns.
+    \item \textbf{Embarked ↔ Fare \& Pclass:} Different ports show different fare distributions and class compositions.
 \end{itemize}
 
-\textbf{System Boundaries:}
-\begin{itemize}
-    \item Inside the system: Data, model, prediction, evaluation.
-    \item Outside the system: Human decisions, real-life rescue dynamics, historical context.
-\end{itemize}
+These relationships reflect the internal structure of the dataset itself, without inferring external historical dynamics.
 
 \subsection*{Complexity \& Sensitivity}
-The system exhibits several factors that increase its complexity and affect its sensitivity.
 
-\textbf{Complexity:}
+The dataset system exhibits complexity due to interactions and missing data.
+
+\textbf{Complexity Sources:}
 \begin{itemize}
-    \item Missing data: Variables such as Age, Cabin, and Embarked contain null values that must be handled.
-    \item Feature interactions: Combinations like Sex with Age, or Pclass with Fare, produce nonlinear effects.
-    \item Class imbalance: There are more passengers who did not survive than those who did.
+    \item \textbf{Nonlinear relationships:}  
+    Variables such as Sex, Age, and Pclass interact in non-additive ways.
+    \item \textbf{Missingness:}  
+    Age and Cabin introduce uncertainty and require imputation or exclusion.
+    \item \textbf{Multiple categorical levels:}  
+    Embarked, Pclass, and Name-derived titles increase structural complexity.
 \end{itemize}
 
-\textbf{Sensitivity:}
+\textbf{Sensitivity:}  
+Small changes in key variables alter system outcomes significantly:
 \begin{itemize}
-    \item Small changes in input: Slight modifications to Age or Fare can shift predictions.
-    \item Removal of key features: Dropping columns like Sex or Pclass reduces model accuracy.
-    \item Limited dataset size: With few samples, complex models risk overfitting.
+    \item Minor modifications to Age influence categorical grouping.
+    \item Changing Sex produces large shifts in survival likelihood in the dataset.
+    \item Removing Pclass reduces the dataset's predictive structure.
+    \item Family variables (SibSp, Parch) alter patterns in subtle but noticeable ways.
 \end{itemize}
 
-\subsection*{Chaos and Randomness}
-Although the system is built on structured data, elements of unpredictability emerge, reflecting aspects of chaos theory:
+All sensitivity observations come directly from variable–target relationships present in the Kaggle dataset.
+
+\subsection*{Chaos and Randomness (Dataset Interpretation Only)}
+
+Although the dataset is structured, certain patterns behave unpredictably from a purely statistical standpoint:
+
 \begin{itemize}
-    \item Unforeseen interactions: Some passengers with favorable traits didn’t survive, suggesting hidden variables or unrecorded decisions.
-    \item Feedback loops: SibSp and Parch indicate family ties. These may create behavioral feedback.
-    \item Nonlinear effects: The impact of variables like Age or Fare is not consistent.
-    \item Real-world randomness: Survival depends on human factors, chances, and situational chaos.
+    \item \textbf{Outliers:}  
+    High Fare passengers found in lower classes or vice versa.
+    \item \textbf{Inconsistent patterns:}  
+    Some individuals with similar profiles have opposite survival outcomes.
+    \item \textbf{Hidden structure:}  
+    Missing cabins, ambiguous ticket codes, and name titles create irregular patterns.
+    \item \textbf{Small variations producing large outcome shifts:}  
+    Very similar passengers may differ in the target variable.
 \end{itemize}
+
+These behaviors are considered chaotic only within the context of the dataset’s statistical structure.
 
 \subsection*{Conclusions}
-The Titanic competition isn’t just about predicting survival—it’s a system packed with connections, gaps, and decisions that mirror human complexity. The data looks simple, but every variable interacts in surprising ways. There are patterns, but also chaos. Logic, but also randomness. Understanding this system means more than training a model—it’s about thinking holistically, seeing beyond the numbers, and realizing that even in a controlled setup, uncertainty is always part of the game.
+
+The Kaggle Titanic dataset represents a closed, attribute–based system where a binary output (Survived) emerges from the interaction of demographic, social, and ticket-related features. Using only the information provided in the dataset, we can identify patterns, dependencies, and sensitivities that characterize the behavior of this system. No external information is required nor assumed.
 
 \section*{3. Visual Representation}
-
-
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth]{Figure1.png}
-    \caption{Figure 1 shows the architecture of the Kaggle competition environment.}
-    \label{fig:system-architecture}
+    % Asegúrate de que la ruta de la imagen sea correcta en tu proyecto Overleaf
+    \includegraphics[width=0.95\textwidth]{Workshop 1/architecture_diagram.png}
+    \caption{System architecture diagram showing interconnected modules for data ingestion, preprocessing, modeling, and evaluation.}
+    \label{fig:diagram1}
 \end{figure}
 
-\noindent
-\textbf{Figure \ref{fig:system-architecture}} shows the architecture of the Kaggle competition environment. 
-The competitor accesses the Competition Page to join and download datasets (\texttt{train.csv}, \texttt{test.csv}). 
-Model development occurs in Notebooks (Kaggle Notebooks), using Compute resources to train and produce \texttt{submission.csv}. 
-The Submission System accepts submissions, and the Evaluation Engine computes the accuracy against the hidden ground truth, updating the public Leaderboard. 
-Social and knowledge-sharing channels (Discussion Forum, Discord, GitHub) provide community feedback and starter code. 
-Storage/DB centralizes datasets, user profiles, submissions and scores.
+% Texto explicativo (Versión limpia sin citas)
+\subsection*{Inputs}
+These represent the raw elements that feed the system. The system is composed of demographic, social, and ticket-related attributes.
+
+\begin{itemize}
+    \item \textbf{Data Sources:} Files \texttt{train.csv} and \texttt{test.csv}.
+    \item \textbf{Variables:} Conceptually grouped as follows:
+    \begin{itemize}
+        \item \textbf{Demographic:} Sex, Age, Name.
+        \item \textbf{Socioeconomic:} Pclass (Class), Fare.
+        \item \textbf{Family:} SibSp (Siblings/Spouses), Parch (Parents/Children).
+        \item \textbf{Logistic:} Ticket, Cabin, Embarked.
+    \end{itemize}
+\end{itemize}
+
+\subsection*{The System (Internal Logic and Transformations)}
+The ``Process'' in this context is not an external Machine Learning algorithm, but the intrinsic interactions observable strictly from the data.
+
+\begin{itemize}
+    \item \textbf{Interactions:} Variables do not act alone, but interact through specific mechanisms:
+    \begin{itemize}
+        \item \textit{Stratification:} The relationship between Pclass and Fare defines status.
+        \item \textit{Grouping:} SibSp and Parch create a family group structure.
+        \item \textit{Derivation:} The Name attribute contains implicit titles (Mr., Mrs.) that generate categories.
+    \end{itemize}
+    
+    \item \textbf{Constraints:} The system has internal limitations such as missing values in Age and Cabin that introduce uncertainty.
+    
+    \item \textbf{Sensitivity:} Small changes in key variables (such as Sex or minor modifications in Age) drastically alter the system's outcome.
+\end{itemize}
+
+\subsection*{Output}
+The system's final purpose is to map the processed inputs to a single binary state.
+
+\begin{itemize}
+    \item \textbf{Variable:} Survived (0 = Did Not Survive, 1 = Survived).
+    \item \textbf{Nature:} It is an emergent result of the interaction of the aforementioned attributes.
+\end{itemize}
 
 \end{document}
