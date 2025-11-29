@@ -70,7 +70,7 @@ To reproduce the simulations locally, follow these steps:
 
 ---
 
-## 🛠Dependencies
+## Dependencies
 * Python 3.8+
 * `pandas` - Data manipulation
 * `numpy` - Matrix operations
