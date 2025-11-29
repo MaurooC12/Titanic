@@ -1,38 +1,65 @@
-# Workshop 2 — Systems Design and Implementation
-
----
+# Workshop 2: System Design & Requirements Engineering 📐
 
 ## Overview
+This workshop marks the transition from systemic analysis to **Engineering Design**. Building upon the findings of Workshop 1, we translated the Titanic dataset's characteristics into a formal **System Architecture** and a set of strict **Engineering Requirements**.
 
-This workshop represents the **second stage** of the *System Analysis & Design Project*.  
-Building upon the analytical foundation established in Workshop 1, it focuses on developing a **system design** for the Kaggle competition  
-**“Titanic: Machine Learning from Disaster.”**
-
-The goal is to translate the analytical findings — including sensitivity, chaos, and systemic dependencies — into a **robust, modular, and reproducible system architecture** capable of handling real-world data challenges.
+The goal was to design a system capable of handling the identified "Constraints" (missing data) and "Sensitivity" (nonlinear variable impact) while adhering to **ISO 25010** software quality standards.
 
 ---
 
-## Objectives
+## System Requirements
+We derived functional and non-functional requirements directly from the dataset's internal structure:
 
-- Design a **comprehensive system architecture** that connects data ingestion, preprocessing, model training, and deployment.  
-- Integrate **systems engineering principles** such as scalability, modularity, and maintainability.  
-- Address **chaotic and sensitive behaviors** through controlled randomness, monitoring, and feedback mechanisms.  
-- Define a **technical stack** aligned with the analytical needs of the project.  
-- Produce a structured **System Design Document** that serves as a blueprint for future implementations.
+### Functional Requirements (System Behavior)
+* **R1 - Handling Missing Data (Reliability):** Robust imputation mechanisms for `Age` and `Cabin` to prevent system instability.
+* **R2 - Consistent Categorical Processing:** Deterministic encoding for variables like `Sex` and `Embarked` to ensure reproducibility.
+* **R3 - Sensitivity Management:** Stable transformations for high-impact variables (e.g., Sex, Pclass) to avoid amplifying small perturbations.
+* **R4 - Feature Interaction Support:** Capability to engineer complex features (e.g., `FamilySize`) that reflect internal group structures.
 
----
-
-## Key Design Features
-
-The system design emphasizes **clarity, modularity, and control**.  
-Each stage of the workflow — from data loading to prediction generation — is clearly separated to ensure maintainability and reproducibility.  
-
-Core characteristics include:  
-- **Python-based stack** using Pandas, NumPy, Scikit-learn, Flask, and Docker.  
-- **Pipeline architecture** that supports step-by-step execution and testing.  
-- **Cross-validation** to enhance model robustness and reliability.  
-- **Logging and monitoring** to identify sensitivity and chaos within data behavior.  
-- **Containerized deployment** for scalable and reproducible execution environments.
+### User-Centric Requirements
+* **U1 - Interpretability:** The system must provide confidence metadata, not just binary predictions, to help users understand the result.
+* **U3 - Reproducibility:** All preprocessing steps must be versioned to allow consistent replication of results.
 
 ---
 
+## High-Level Architecture
+The system is structured into three distinct layers to ensure modularity and fault tolerance:
+
+### 1. Reliability Layer (Data Integrity)
+* Acts as the system's "shield" against chaos.
+* **Modules:** Data Validation, Imputation Module, and Outlier Management.
+
+### 2. Maintainability & Scalability Layer (Core)
+* Decouples transformation logic to allow independent updates.
+* **Modules:** Text Processing (Titles), Numeric Binning, and Group Processing.
+
+### 3. Usability Layer (Output)
+* Ensures results are meaningful to the user.
+* **Modules:** Classification Logic and Confidence Metadata generation.
+
+---
+
+## Handling Chaos & Sensitivity
+Strategies designed to mitigate the systemic risks identified in Workshop 1:
+* **Feedback Monitoring:** Continuous evaluation of model performance to detect drift.
+* **Robust Preprocessing:** Normalization pipelines to limit the "Butterfly Effect" of small input changes.
+* **Model Ensembles:** Using multiple models to reduce the variance caused by chaotic data patterns.
+
+---
+
+## Technical Stack
+The selected tools support the modular and reproducible design:
+* **Language:** Python 3.8+
+* **Data Processing:** Pandas & NumPy (Data Layer)
+* **Modeling:** Scikit-learn (Preprocessing & Modeling Layer)
+* **Visualization:** Matplotlib/Seaborn (Evaluation Layer)
+* **Version Control:** Git/GitHub (Traceability)
+
+---
+
+## Contents
+
+| File | Description |
+| :--- | :--- |
+| `Workshop2.pdf` | **Full Design Report.** Detailed documentation of requirements, architectural diagrams, and sensitivity mitigation strategies. |
+| `system_diagram.png` | Visual representation of the Reliability, Maintainability, and Usability layers. |
