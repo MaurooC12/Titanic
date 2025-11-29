@@ -50,5 +50,5 @@ We observed that the system is **highly sensitive to initial conditions**:
 
 | File | Description |
 | :--- | :--- |
-| `Workshop1.pdf` | **Full Analysis Report.** Detailed breakdown of system elements, relations, and complexity analysis. |
+| `Workshop-1.pdf` | **Full Analysis Report.** Detailed breakdown of system elements, relations, and complexity analysis. |
 | `architecture_diagram_corrected.png` | Visual representation of the Input-Process-Output logical flow. |
