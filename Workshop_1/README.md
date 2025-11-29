@@ -1,57 +1,54 @@
-# Workshop 1 — Systems Engineering Analysis
-
----
+# Workshop 1: Systems Engineering Analysis 
 
 ## Overview
+This workshop establishes the conceptual foundation of the project. Instead of immediately applying predictive algorithms, we analyzed the Kaggle Titanic dataset from a **Systems Engineering perspective**.
 
-This workshop marks the **first stage** of the *System Analysis & Design Project*.  
-Its purpose is to apply **systems engineering principles** to the Kaggle competition  
-**“Titanic: Machine Learning from Disaster”**, analyzing the system as a dynamic structure of interacting elements affected by complexity, sensitivity, and chaos.
-
-This phase builds the **conceptual foundation** for the following design and implementation stages.
+The dataset was defined as a **closed system** where passenger attributes serve as inputs that interact through internal rules (social norms, physical constraints) to produce a binary output (Survival). This stage focused on identifying the system's boundaries, constraints, and inherent complexity.
 
 ---
 
-## Objectives
+## System Definition
+We mapped the dataset features to standard system components:
 
-- Perform a **systemic analysis** of the Titanic competition to identify its main components and relationships.  
-- Evaluate **data dependencies**, **constraints**, and **inter-element sensitivity** affecting predictive performance.  
-- Recognize **chaotic and nonlinear behaviors** within the dataset.  
-- Create a **visual model** of the system architecture, representing how competition elements interact.  
-- Generate an analytical report that supports the system design developed in Workshop 2.
+### 1. Inputs (System Elements)
+The raw attributes defining each unit (passenger) within the system:
+* **Demographic:** `Sex`, `Age`.
+* **Socioeconomic:** `Pclass`, `Fare`.
+* **Social Grouping:** `SibSp`, `Parch` (Family structure).
+* **Logistic:** `Embarked`, `Cabin`, `Ticket`.
+
+### 2. Processes (Internal Logic)
+Observable transformations and interactions strictly within the data:
+* **Stratification:** The interaction between *Pclass* and *Fare* defining status.
+* **Grouping:** The combination of *SibSp* and *Parch* forming family units.
+
+### 3. Output (System State)
+* **Target Variable:** `Survived` (0 or 1).
+* **Nature:** An emergent result of the interaction between the inputs.
 
 ---
 
-## Files Included
+## Complexity, Chaos & Sensitivity
+A critical part of this workshop was identifying why the system is difficult to model:
+
+### System Constraints
+* **Missing Data:** Significant gaps in `Age` and `Cabin` introduce uncertainty and instability.
+* **Rigidity:** The system is limited to a fixed set of variables, requiring interpretation of categorical data.
+
+### Sensitivity Analysis
+We observed that the system is **highly sensitive to initial conditions**:
+* Small modifications to *Age* or *Sex* inputs can drastically shift the survival outcome.
+* Minor changes in *Pclass* affect multiple related behaviors (Fare distribution, Embarkation point).
+
+### Chaotic Behavior
+* **Outliers:** High-fare passengers in lower classes (and vice-versa) represent system anomalies.
+* **Non-linearity:** Variables interact in non-additive ways (e.g., the survival rate of a "Male" changes entirely depending on "Age" and "Class").
+
+---
+
+## Contents
 
 | File | Description |
-|------|-------------|
-| **`Workshop.pdf`** | Final report document submitted for Workshop 1. |
-| **`worksheet.tex`** | LaTeX source file used to compile the report. |
-| **`Figure1.png`** | System architecture diagram for the Kaggle environment. |
-| **`Workshop1.excalidraw`** | Editable version of the system diagram. |
-| **`README.md`** | Overview and description of this workshop folder. |
-
----
-
-## Key Insights
-
-Through a systemic approach, the analysis revealed that the Titanic dataset behaves as a **complex adaptive system**, influenced by interdependent variables and unpredictable factors.  
-Key findings include:
-
-- High sensitivity to missing or incomplete data (Age, Cabin, Embarked).  
-- Strong interactions among core features such as *Sex*, *Pclass*, and *Fare*.  
-- Evidence of **nonlinear effects** and **feedback patterns** consistent with chaos theory.  
-- Importance of structured data handling and modular analysis pipelines for reproducibility.
-
----
-
-## Visual Component
-
-Below is the system architecture diagram representing the Kaggle competition flow —  
-from **data ingestion** and **model development** to **submission** and **evaluation**.
-
-![System Diagram](./Figure1.png)
-
----
-
+| :--- | :--- |
+| `Workshop1.pdf` | **Full Analysis Report.** Detailed breakdown of system elements, relations, and complexity analysis. |
+| `system_diagram.png` | Visual representation of the Input-Process-Output logical flow. |
