@@ -53,5 +53,5 @@ A comprehensive risk assessment was conducted (aligned with **ISO 9000**), ident
 | File | Description |
 | :--- | :--- |
 | `Workshop3.pdf` | **Full Report.** detailed documentation of the architecture, risk analysis, and project timeline. |
-| `architecture_diagram.png` | Visual representation of the refined Reliability, Maintainability, and Usability layers. |
+| `architecture_diagram_corrected.png` | Visual representation of the refined Reliability, Maintainability, and Usability layers. |
 | `Workflow and Timeline Diagram.png` | Project timeline and Kanban structure diagram. |
