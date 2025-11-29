@@ -25,9 +25,9 @@ This initial stage analyzes the Titanic dataset as a logic system. It identifies
 ### Workshop 2 — System Design and Requirements
 **Focus:** Architecture & ISO 25010 Standards  
 Based on the analysis, this phase translates insights into a formal **System Architecture**. We defined Functional and Non-Functional Requirements (R1-R6) and designed a modular architecture composed of three key layers:
-1.  [cite_start]**Reliability Layer:** For data ingestion and imputation[cite: 77].
-2.  [cite_start]**Maintainability Layer:** For modular feature engineering[cite: 83].
-3.  [cite_start]**Usability Layer:** For interpretability of results[cite: 92].
+1.  **Reliability Layer:** For data ingestion and imputation[cite: 77].
+2.  **Maintainability Layer:** For modular feature engineering[cite: 83].
+3.  **Usability Layer:** For interpretability of results[cite: 92].
 
 > Requirements and Architecture specs in: [`Workshop_2`](./Workshop_2)
 
