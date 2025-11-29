@@ -1,4 +1,4 @@
-# Workshop 2: System Design & Requirements Engineering 📐
+# Workshop 2: System Design & Requirements Engineering 
 
 ## Overview
 This workshop marks the transition from systemic analysis to **Engineering Design**. Building upon the findings of Workshop 1, we translated the Titanic dataset's characteristics into a formal **System Architecture** and a set of strict **Engineering Requirements**.
