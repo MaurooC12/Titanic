@@ -1,4 +1,4 @@
-# Workshop 4: Kaggle System Simulation 🚢
+# Workshop 4: Kaggle System Simulation 
 
 **System Analysis & Design Project** *Universidad Distrital Francisco José de Caldas*
 
