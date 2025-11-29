@@ -1,6 +1,5 @@
 # Workshop 3: System Architecture Refinement & Project Management 
 
-**System Analysis & Design Project** *Universidad Distrital Francisco José de Caldas*
 
 ## Overview
 This workshop focuses on transforming the logical model defined in Workshop 2 into a **robust, deployable engineering architecture**.
