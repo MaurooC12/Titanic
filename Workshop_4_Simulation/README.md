@@ -2,7 +2,7 @@
 
 **System Analysis & Design Project** *Universidad Distrital Francisco José de Caldas*
 
-## 📋 Overview
+## Overview
 This folder contains the computational implementation of **Workshop 4**, focused on validating the System Architecture designed in previous workshops.
 
 The objective is to explore the concepts of **Chaos** and **Sensitivity** within the Titanic system through two distinct simulation paradigms:
@@ -11,7 +11,7 @@ The objective is to explore the concepts of **Chaos** and **Sensitivity** within
 
 ---
 
-## 📂 Contents
+## Contents
 
 | File | Description |
 | :--- | :--- |
@@ -22,7 +22,7 @@ The objective is to explore the concepts of **Chaos** and **Sensitivity** within
 
 ---
 
-## 🔬 Simulation Scenarios
+## Simulation Scenarios
 
 ### 1. The Reliability Layer (Data Preparation)
 Before simulation, the raw data passes through the **Reliability Layer** designed in Workshop 3.
@@ -44,7 +44,7 @@ Before simulation, the raw data passes through the **Reliability Layer** designe
 
 ---
 
-## 🚀 How to Run
+## How to Run
 
 To reproduce the simulations locally, follow these steps:
 
