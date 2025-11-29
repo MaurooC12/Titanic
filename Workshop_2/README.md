@@ -61,5 +61,5 @@ The selected tools support the modular and reproducible design:
 
 | File | Description |
 | :--- | :--- |
-| `Workshop2.pdf` | **Full Design Report.** Detailed documentation of requirements, architectural diagrams, and sensitivity mitigation strategies. |
+| `Workshop-2.pdf` | **Full Design Report.** Detailed documentation of requirements, architectural diagrams, and sensitivity mitigation strategies. |
 | `architecture_diagram_corrected.png` | Visual representation of the Reliability, Maintainability, and Usability layers. |
